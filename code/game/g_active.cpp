@@ -9017,30 +9017,56 @@ void ClientThink_real(gentity_t* ent, usercmd_t* ucmd)
 				}
 			}
 		}
-		else if (IsPressingDashButton(ent) 
+		else if (IsPressingDashButton(ent)
 			&& !PM_KickMove(ent->client->ps.saber_move)
 			&& !PM_SaberInAttack(ent->client->ps.saber_move))
 		{
 			client->ps.dashtimeplayer = level.time;
 
-			if (client->ps.dashstartTime <= 0 && level.time - client->ps.dashlaststartTime >= 5000)
+			if (client->IsSprinting)
 			{
-				// They just pressed dash. Mark the time... 8000 wait between allowed dash.
-				client->ps.dashstartTime = level.time;
-				client->ps.dashlaststartTime = level.time;
-
-				if (!(client->ps.communicatingflags & 1 << DASHING))
+				if (client->ps.dashstartTime <= 0 && level.time - client->ps.dashlaststartTime >= 2000)
 				{
-					client->ps.communicatingflags |= 1 << DASHING;
+					// They just pressed dash. Mark the time... 8000 wait between allowed dash.
+					client->ps.dashstartTime = level.time;
+					client->ps.dashlaststartTime = level.time;
+
+					if (!(client->ps.communicatingflags & 1 << DASHING))
+					{
+						client->ps.communicatingflags |= 1 << DASHING;
+					}
+				}
+				else
+				{
+					if (level.time - client->ps.dashstartTime >= 1500)
+					{
+						// When respect was pressed, wait 3000 before letting go of respect.
+						client->ps.dashstartTime = 0;
+						client->ps.communicatingflags &= ~(1 << DASHING);
+					}
 				}
 			}
 			else
 			{
-				if (level.time - client->ps.dashstartTime >= 1500)
+				if (client->ps.dashstartTime <= 0 && level.time - client->ps.dashlaststartTime >= 5000)
 				{
-					// When respect was pressed, wait 3000 before letting go of respect.
-					client->ps.dashstartTime = 0;
-					client->ps.communicatingflags &= ~(1 << DASHING);
+					// They just pressed dash. Mark the time... 8000 wait between allowed dash.
+					client->ps.dashstartTime = level.time;
+					client->ps.dashlaststartTime = level.time;
+
+					if (!(client->ps.communicatingflags & 1 << DASHING))
+					{
+						client->ps.communicatingflags |= 1 << DASHING;
+					}
+				}
+				else
+				{
+					if (level.time - client->ps.dashstartTime >= 1500)
+					{
+						// When respect was pressed, wait 3000 before letting go of respect.
+						client->ps.dashstartTime = 0;
+						client->ps.communicatingflags &= ~(1 << DASHING);
+					}
 				}
 			}
 		}
