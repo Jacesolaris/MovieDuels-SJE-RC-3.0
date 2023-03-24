@@ -364,7 +364,7 @@ gentity_t* SelectRandomDeathmatchSpawnPoint()
 	int count = 0;
 	gentity_t* spot = nullptr;
 
-	while ((spot = G_Find(spot, FOFS(classname), "info_player_deathmatch")) != nullptr)
+	while ((spot = G_Find(spot, FOFS(classname), "info_player_deathmatch")) != nullptr && count < MAX_SPAWN_POINTS)
 	{
 		if (spot->targetname != nullptr)
 		{

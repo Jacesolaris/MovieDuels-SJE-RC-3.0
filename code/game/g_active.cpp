@@ -9148,7 +9148,7 @@ void ClientThink_real(gentity_t* ent, usercmd_t* ucmd)
 		}
 		else if (IsPressingKickButton(ent))
 		{
-			if (client->ps.kickstartTime <= 0 && level.time - client->ps.kicklaststartTime >= 2000)
+			if (client->ps.kickstartTime <= 0 && level.time - client->ps.kicklaststartTime >= 1500)
 			{
 				// They just pressed kick. Mark the time... 5000 wait between allowed kicks.
 				client->ps.kickstartTime = level.time;

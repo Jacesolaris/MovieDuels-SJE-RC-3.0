@@ -1680,14 +1680,8 @@ void (*rb_surfaceTable[SF_NUM_SURFACE_TYPES])(void*) = {
 	(void(*)(void*))RB_SurfaceTriangles,	// SF_TRIANGLES,
 	(void(*)(void*))RB_SurfacePolychain,	// SF_POLY,
 	(void(*)(void*))RB_SurfaceMesh,			// SF_MD3,
-	/*
-	Ghoul2 Insert Start
-	*/
-		(void(*)(void*))RB_SurfaceGhoul,		// SF_MDX,
-		/*
-		Ghoul2 Insert End
-		*/
-			(void(*)(void*))RB_SurfaceFlare,		// SF_FLARE,
-			(void(*)(void*))RB_SurfaceEntity,		// SF_ENTITY
-			(void(*)(void*))RB_SurfaceDisplayList	// SF_DISPLAY_LIST
+	(void(*)(void*))RB_SurfaceGhoul,		// SF_MDX,
+	(void(*)(void*))RB_SurfaceFlare,		// SF_FLARE,
+	(void(*)(void*))RB_SurfaceEntity,		// SF_ENTITY
+	(void(*)(void*))RB_SurfaceDisplayList	// SF_DISPLAY_LIST
 };

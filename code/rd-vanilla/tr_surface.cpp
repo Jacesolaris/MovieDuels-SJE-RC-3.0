@@ -2019,17 +2019,8 @@ void (*rb_surfaceTable[SF_NUM_SURFACE_TYPES])(void*) = {
 	reinterpret_cast<void(*)(void*)>(RB_SurfaceTriangles),	// SF_TRIANGLES,
 	reinterpret_cast<void(*)(void*)>(RB_SurfacePolychain),	// SF_POLY,
 	reinterpret_cast<void(*)(void*)>(RB_SurfaceMesh),			// SF_MD3,
-	/*
-	Ghoul2 Insert Start
-	*/
-
-		reinterpret_cast<void(*)(void*)>(RB_SurfaceGhoul),		// SF_MDX,
-		/*
-		Ghoul2 Insert End
-		*/
-
-			reinterpret_cast<void(*)(void*)>(RB_SurfaceFlare),		// SF_FLARE,
-			reinterpret_cast<void(*)(void*)>(RB_SurfaceEntity),		// SF_ENTITY
-			reinterpret_cast<void(*)(void*)>(RB_SurfaceDisplayList // SF_DISPLAY_LIST
-			)	// SF_DISPLAY_LIST
+	reinterpret_cast<void(*)(void*)>(RB_SurfaceGhoul),		// SF_MDX,
+	reinterpret_cast<void(*)(void*)>(RB_SurfaceFlare),		// SF_FLARE,
+	reinterpret_cast<void(*)(void*)>(RB_SurfaceEntity),		// SF_ENTITY
+	reinterpret_cast<void(*)(void*)>(RB_SurfaceDisplayList)	// SF_DISPLAY_LIST
 };
