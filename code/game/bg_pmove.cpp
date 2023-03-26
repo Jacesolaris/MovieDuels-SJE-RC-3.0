@@ -829,6 +829,11 @@ static void PM_Friction()
 			drop += speed * pm_waterfriction * pm->waterlevel * pml.frametime;
 		}
 	}
+	// If on a client then there is no friction
+	else if (pm->ps->groundEntityNum < MAX_CLIENTS)
+	{
+		drop = 0;
+	}
 
 	// apply flying friction
 	if (pm->ps->pm_type == PM_SPECTATOR)
