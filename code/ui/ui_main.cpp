@@ -3319,7 +3319,7 @@ void UI_LoadMenus(const char* menuFile, const qboolean reset)
 	Com_Printf("---------------- MovieDuels-SJE-RC-3.0---------------------------\n");
 	Com_Printf("-----------------------------------------------------------------\n");
 	Com_Printf("------------------------Update 8---------------------------------\n");
-	Com_Printf("------------------Build Date 26/03/2023--------------------------\n");
+	Com_Printf("------------------Build Date 03/04/2023--------------------------\n");
 	Com_Printf("-----------------------------------------------------------------\n");
 	Com_Printf("------------------------LightSaber-------------------------------\n");
 	Com_Printf("-----------An elegant weapon for a more civilized age------------\n");
@@ -4777,7 +4777,7 @@ void UI_GetVideoSetup()
 	Cvar_Register(nullptr, "ui_r_picmip", "0", CVAR_ROM);
 	Cvar_Register(nullptr, "ui_r_texturebits", "0", CVAR_ROM);
 	Cvar_Register(nullptr, "ui_r_texturemode", "0", CVAR_ROM);
-	Cvar_Register(nullptr, "ui_r_detailtextures", "0", CVAR_ROM);
+	Cvar_Register(nullptr, "ui_r_detailtextures", "1", CVAR_ROM);
 	Cvar_Register(nullptr, "ui_r_ext_compress_textures", "0", CVAR_ROM);
 	Cvar_Register(nullptr, "ui_r_depthbits", "0", CVAR_ROM);
 	Cvar_Register(nullptr, "ui_r_subdivisions", "0", CVAR_ROM);

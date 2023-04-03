@@ -1673,7 +1673,10 @@ void WeaponThink()
 
 	// Can't Fire While Cloaked
 	if (NPC->client &&
-		(NPC->client->ps.powerups[PW_CLOAKED] || level.time < NPC->client->ps.powerups[PW_UNCLOAKING]))
+		(NPC->client->ps.powerups[PW_CLOAKED] 
+			|| level.time < NPC->client->ps.powerups[PW_UNCLOAKING]
+			|| NPC->client->ps.powerups[PW_STUNNED]
+			|| NPC->client->ps.powerups[PW_SHOCKED]))
 	{
 		return;
 	}
@@ -1693,7 +1696,6 @@ void WeaponThink()
 	{
 		return;
 	}
-
 	// DROIDEKA
 
 	if (droideka_npc(NPC))
@@ -1702,17 +1704,13 @@ void WeaponThink()
 		{
 			BubbleShield_TurnOn();
 		}
-		if (!NPC->flags & FL_SHIELDED)
+		if (NPC->flags &= ~FL_SHIELDED)
 		{
 			BubbleShield_TurnOn();
 		}
 		if (!NPC->client->ps.powerups[PW_GALAK_SHIELD])
 		{
 			BubbleShield_TurnOn();
-		}
-		if (NPC->client->ps.powerups[PW_STUNNED])
-		{
-			return;
 		}
 	}
 
