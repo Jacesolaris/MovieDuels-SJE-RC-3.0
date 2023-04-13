@@ -440,6 +440,11 @@ void NPC_SetMiscDefaultData(gentity_t* ent)
 		ent->client->dismembered = qfalse;
 	}
 
+	if (Q_stricmp("md_dindjarin", ent->NPC_type) == 0)
+	{
+		ent->flags |= FL_SHIELDED | FL_NO_KNOCKBACK; //low-level shots bounce off, no knockback
+	}
+
 	if (Q_stricmpn(ent->NPC_type, "hazardtrooper", 13) == 0)
 	{
 		//hazard trooper

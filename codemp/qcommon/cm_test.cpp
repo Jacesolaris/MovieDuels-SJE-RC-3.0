@@ -29,8 +29,9 @@ CM_PointLeafnum_r
 
 ==================
 */
-int CM_PointLeafnum_r(const vec3_t p, int num, clipMap_t* local) {
-	float		d;
+int CM_PointLeafnum_r(const vec3_t p, int num, clipMap_t* local)
+{
+	float d;
 
 	while (num >= 0)
 	{
@@ -47,7 +48,7 @@ int CM_PointLeafnum_r(const vec3_t p, int num, clipMap_t* local) {
 			num = node->children[0];
 	}
 
-	c_pointcontents++;		// optimize counter
+	c_pointcontents++; // optimize counter
 
 	return -1 - num;
 }
