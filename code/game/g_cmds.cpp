@@ -299,6 +299,11 @@ void G_Give(gentity_t* ent, const char* name, const char* args, const int argc)
 						|| !Q_stricmp("md_dindjarin", ent->NPC_type))
 					{
 						ent->client->ps.inventory[INV_GRAPPLEHOOK] = 1;
+						
+						if (!Q_stricmp("md_dindjarin", ent->NPC_type))
+						{
+							ent->flags |= FL_SHIELDED | FL_NO_KNOCKBACK; //low-level shots bounce off, no knockback
+						}
 					}
 					else
 					{
