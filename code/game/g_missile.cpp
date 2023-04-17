@@ -149,6 +149,16 @@ void G_MissileReflectEffect(const gentity_t* ent, vec3_t dir)
 	}
 }
 
+void G_MissileBounceBeskarEffect(const gentity_t* ent, vec3_t dir)
+{
+	G_PlayEffect("blaster/beskar_impact", ent->currentOrigin, dir);
+
+	if (ent->owner && !ent->owner->NPC)
+	{
+		CGCam_BlockShakeSP(0.45f, 100);
+	}
+}
+
 //-------------------------------------------------------------------------
 static void G_MissileStick(gentity_t* missile, gentity_t* other, trace_t* tr)
 {
@@ -2019,10 +2029,33 @@ void G_MissileImpact_MD(gentity_t* ent, trace_t* trace, const int hit_loc = HL_N
 		!=
 		WP_NOGHRI_STICK);
 
+	auto beskar = static_cast<qboolean>((other->flags & FL_DINDJARIN) 
+		&& !ent->splashDamage
+		&& !ent->splashRadius
+		&& ent->methodOfDeath != MOD_SABER
+		&& ent->methodOfDeath != MOD_REPEATER_ALT
+		&& ent->methodOfDeath != MOD_FLECHETTE_ALT
+		&& ent->methodOfDeath != MOD_ROCKET
+		&& ent->methodOfDeath != MOD_ROCKET_ALT
+		&& ent->methodOfDeath != WP_NOGHRI_STICK
+		&& ent->methodOfDeath != MOD_CONC_ALT
+		&& ent->methodOfDeath != MOD_THERMAL
+		&& ent->methodOfDeath != MOD_THERMAL_ALT
+		&& ent->methodOfDeath != MOD_DEMP2
+		&& ent->methodOfDeath != MOD_DEMP2_ALT
+		&& ent->methodOfDeath != MOD_EXPLOSIVE
+		&& ent->methodOfDeath != MOD_DETPACK
+		&& ent->methodOfDeath != MOD_LASERTRIP
+		&& ent->methodOfDeath != MOD_LASERTRIP_ALT
+		&& ent->methodOfDeath != MOD_SEEKER
+		&& ent->methodOfDeath != MOD_CONC
+		&& (!Q_irand(0, 1)));
+
 	if (ent->dflags & DAMAGE_HEAVY_WEAP_CLASS)
 	{
 		// heavy class missiles generally never bounce.
 		bounce = qfalse;
+		beskar = qfalse;
 	}
 
 	if (other->flags & (FL_DMG_BY_HEAVY_WEAP_ONLY | FL_SHIELDED))
@@ -2040,6 +2073,7 @@ void G_MissileImpact_MD(gentity_t* ent, trace_t* trace, const int hit_loc = HL_N
 	{
 		// demp2 shots can never bounce
 		bounce = qfalse;
+		beskar = qfalse;
 		// in fact, alt-charge shots will not call the regular impact functions
 		if (ent->alt_fire)
 		{
@@ -2049,6 +2083,30 @@ void G_MissileImpact_MD(gentity_t* ent, trace_t* trace, const int hit_loc = HL_N
 			DEMP2_AltDetonate(ent);
 			return;
 		}
+	}
+
+	if (beskar)
+	{
+		bounce = qfalse;
+		// Check to see if there is a bounce count
+		if (ent->bounceCount)
+		{
+			// decrement number of bounces and then see if it should be done bouncing
+			if (!--ent->bounceCount)
+			{
+				// He (or she) will bounce no more (after this current bounce, that is).
+				ent->s.eFlags &= ~(EF_BOUNCE | EF_BOUNCE_HALF);
+			}
+		}
+
+		G_BounceMissile(ent, trace);
+
+		if (ent->owner)
+		{
+			G_MissileAddAlerts(ent);
+		}
+		G_MissileBounceBeskarEffect(ent, trace->plane.normal);
+		return;
 	}
 
 	if (bounce)
@@ -2472,10 +2530,33 @@ void G_MissileImpactJKA(gentity_t* ent, trace_t* trace, const int hit_loc = HL_N
 		!=
 		WP_NOGHRI_STICK);
 
+	auto beskar = static_cast<qboolean>((other->flags & FL_DINDJARIN)
+		&& !ent->splashDamage
+		&& !ent->splashRadius
+		&& ent->methodOfDeath != MOD_SABER
+		&& ent->methodOfDeath != MOD_REPEATER_ALT
+		&& ent->methodOfDeath != MOD_FLECHETTE_ALT
+		&& ent->methodOfDeath != MOD_ROCKET
+		&& ent->methodOfDeath != MOD_ROCKET_ALT
+		&& ent->methodOfDeath != WP_NOGHRI_STICK
+		&& ent->methodOfDeath != MOD_CONC_ALT
+		&& ent->methodOfDeath != MOD_THERMAL
+		&& ent->methodOfDeath != MOD_THERMAL_ALT
+		&& ent->methodOfDeath != MOD_DEMP2
+		&& ent->methodOfDeath != MOD_DEMP2_ALT
+		&& ent->methodOfDeath != MOD_EXPLOSIVE
+		&& ent->methodOfDeath != MOD_DETPACK
+		&& ent->methodOfDeath != MOD_LASERTRIP
+		&& ent->methodOfDeath != MOD_LASERTRIP_ALT
+		&& ent->methodOfDeath != MOD_SEEKER
+		&& ent->methodOfDeath != MOD_CONC
+		&& (!Q_irand(0, 1)));
+
 	if (ent->dflags & DAMAGE_HEAVY_WEAP_CLASS)
 	{
 		// heavy class missiles generally never bounce.
 		bounce = qfalse;
+		beskar = qfalse;
 	}
 
 	if (other->flags & (FL_DMG_BY_HEAVY_WEAP_ONLY | FL_SHIELDED))
@@ -2496,7 +2577,7 @@ void G_MissileImpactJKA(gentity_t* ent, trace_t* trace, const int hit_loc = HL_N
 	{
 		// demp2 shots can never bounce
 		bounce = qfalse;
-
+		beskar = qfalse;
 		// in fact, alt-charge shots will not call the regular impact functions
 		if (ent->alt_fire)
 		{
@@ -2506,6 +2587,30 @@ void G_MissileImpactJKA(gentity_t* ent, trace_t* trace, const int hit_loc = HL_N
 			DEMP2_AltDetonate(ent);
 			return;
 		}
+	}
+
+	if (beskar)
+	{
+		bounce = qfalse;
+		// Check to see if there is a bounce count
+		if (ent->bounceCount)
+		{
+			// decrement number of bounces and then see if it should be done bouncing
+			if (!--ent->bounceCount)
+			{
+				// He (or she) will bounce no more (after this current bounce, that is).
+				ent->s.eFlags &= ~(EF_BOUNCE | EF_BOUNCE_HALF);
+			}
+		}
+
+		G_BounceMissile(ent, trace);
+
+		if (ent->owner)
+		{
+			G_MissileAddAlerts(ent);
+		}
+		G_MissileBounceBeskarEffect(ent, trace->plane.normal);
+		return;
 	}
 
 	if (bounce)

@@ -7535,6 +7535,7 @@ dflags		these flags are used to control how T_Damage works
 	DAMAGE_NO_HIT_LOC		Damage not based on hit location
 ============
 */
+int G_PickPainAnim(const gentity_t* self, const vec3_t point, int hit_loc);
 void G_Damage(gentity_t* targ, gentity_t* inflictor, gentity_t* attacker, const vec3_t dir, const vec3_t point,
 	int damage, int dflags, int mod, int hit_loc)
 {
@@ -7639,6 +7640,56 @@ void G_Damage(gentity_t* targ, gentity_t* inflictor, gentity_t* attacker, const 
 	{
 		// swapping the gun into our place to absorb our damage
 		targ = targ->owner;
+	}
+
+	if (targ->flags & FL_DINDJARIN 
+		&& mod != MOD_SABER
+		&& mod != MOD_REPEATER_ALT
+		&& mod != MOD_FLECHETTE_ALT
+		&& mod != MOD_ROCKET
+		&& mod != MOD_ROCKET_ALT
+		&& mod != WP_NOGHRI_STICK
+		&& mod != MOD_CONC_ALT
+		&& mod != MOD_THERMAL
+		&& mod != MOD_THERMAL_ALT
+		&& mod != MOD_DEMP2
+		&& mod != MOD_DEMP2_ALT
+		&& mod != MOD_EXPLOSIVE
+		&& mod != MOD_DETPACK
+		&& mod != MOD_LASERTRIP
+		&& mod != MOD_LASERTRIP_ALT
+		&& mod != MOD_FORCE_GRIP
+		&& mod != MOD_FORCE_LIGHTNING
+		&& mod != MOD_FORCE_DRAIN
+		&& mod != MOD_SEEKER
+		&& mod != MOD_CONC)
+	{
+		 
+		if (damage < 10)
+		{//ignore piddly little damage
+			damage = 5;
+		}
+		else if (damage >= 10)
+		{
+			const int choice = Q_irand(0, 3);
+
+			switch (choice)
+			{
+			case 0:
+				damage = ceil(static_cast<float>(damage) * 0.25f);
+				break;
+			case 1:
+				damage = ceil(static_cast<float>(damage) * 0.5f);
+				break;
+			case 2:
+				damage = ceil(static_cast<float>(damage) * 0.75f);
+				break;
+			case 3:
+			default:
+				damage = 8;
+				break;
+			}
+		}
 	}
 
 	if (targ->flags & FL_SHIELDED && mod != MOD_SABER && !targ->client)

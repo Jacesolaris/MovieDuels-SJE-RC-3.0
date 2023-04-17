@@ -84,6 +84,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #define FL_FORCEMODE            0x02000000	// unlimitedpower
 #define FL_BLOCKPOINTMODE       0x04000000	// thisweaponisyourlife
 #define FL_MORELIGHPLAYER       0x08000000	// Just make him glow a bit
+#define	FL_DINDJARIN			0x10000000	// protected from all damage except lightsabers for 20% of the time
 
 //Pointer safety utilities
 #define VALID( a )		( a != NULL )
