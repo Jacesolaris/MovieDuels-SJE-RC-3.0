@@ -2790,6 +2790,11 @@ void G_ChangePlayerModel(gentity_t* ent, const char* new_model)
 								{
 									ent->flags |= FL_DINDJARIN; //low-level shots bounce off, no knockback
 								}
+
+								if (!Q_stricmp("boba_fett", ent->NPC_type))
+								{
+									ent->flags |= FL_BOBAFETT; //low-level shots bounce off, no knockback
+								}
 							}
 							else
 							{
@@ -2950,6 +2955,11 @@ void G_ChangePlayerModel(gentity_t* ent, const char* new_model)
 								if (!Q_stricmp("md_dindjarin", ent->NPC_type))
 								{
 									ent->flags |= FL_DINDJARIN; //low-level shots bounce off, no knockback
+								}
+
+								if (!Q_stricmp("boba_fett", ent->NPC_type))
+								{
+									ent->flags |= FL_BOBAFETT; //low-level shots bounce off, no knockback
 								}
 							}
 							else

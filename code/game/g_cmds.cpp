@@ -304,6 +304,11 @@ void G_Give(gentity_t* ent, const char* name, const char* args, const int argc)
 						{
 							ent->flags |= FL_DINDJARIN; //low-level shots bounce off, no knockback
 						}
+
+						if (!Q_stricmp("boba_fett", ent->NPC_type))
+						{
+							ent->flags |= FL_BOBAFETT; //low-level shots bounce off, no knockback
+						}
 					}
 					else
 					{

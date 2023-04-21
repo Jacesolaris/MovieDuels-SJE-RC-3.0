@@ -7679,14 +7679,14 @@ void G_Damage(gentity_t* targ, gentity_t* inflictor, gentity_t* attacker, const 
 				damage = ceil(static_cast<float>(damage) * 0.25f);
 				break;
 			case 1:
-				damage = ceil(static_cast<float>(damage) * 0.5f);
+			default:
+				damage = ceil(static_cast<float>(damage) * 0.50f);
 				break;
 			case 2:
 				damage = ceil(static_cast<float>(damage) * 0.75f);
 				break;
 			case 3:
-			default:
-				damage = 8;
+				damage = ceil(static_cast<float>(damage) * 0.95f);
 				break;
 			}
 		}

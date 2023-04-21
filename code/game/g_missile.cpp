@@ -2051,11 +2051,33 @@ void G_MissileImpact_MD(gentity_t* ent, trace_t* trace, const int hit_loc = HL_N
 		&& ent->methodOfDeath != MOD_CONC
 		&& (!Q_irand(0, 1)));
 
+	auto boba_fett = static_cast<qboolean>((other->flags & FL_BOBAFETT)
+		&& !ent->splashDamage
+		&& !ent->splashRadius
+		&& ent->methodOfDeath != MOD_SABER
+		&& ent->methodOfDeath != MOD_REPEATER_ALT
+		&& ent->methodOfDeath != MOD_FLECHETTE_ALT
+		&& ent->methodOfDeath != MOD_ROCKET
+		&& ent->methodOfDeath != MOD_ROCKET_ALT
+		&& ent->methodOfDeath != WP_NOGHRI_STICK
+		&& ent->methodOfDeath != MOD_CONC_ALT
+		&& ent->methodOfDeath != MOD_THERMAL
+		&& ent->methodOfDeath != MOD_THERMAL_ALT
+		&& ent->methodOfDeath != MOD_DEMP2
+		&& ent->methodOfDeath != MOD_DEMP2_ALT
+		&& ent->methodOfDeath != MOD_EXPLOSIVE
+		&& ent->methodOfDeath != MOD_DETPACK
+		&& ent->methodOfDeath != MOD_LASERTRIP
+		&& ent->methodOfDeath != MOD_LASERTRIP_ALT
+		&& ent->methodOfDeath != MOD_SEEKER
+		&& ent->methodOfDeath != MOD_CONC);
+
 	if (ent->dflags & DAMAGE_HEAVY_WEAP_CLASS)
 	{
 		// heavy class missiles generally never bounce.
 		bounce = qfalse;
 		beskar = qfalse;
+		boba_fett = qfalse;
 	}
 
 	if (other->flags & (FL_DMG_BY_HEAVY_WEAP_ONLY | FL_SHIELDED))
@@ -2074,6 +2096,7 @@ void G_MissileImpact_MD(gentity_t* ent, trace_t* trace, const int hit_loc = HL_N
 		// demp2 shots can never bounce
 		bounce = qfalse;
 		beskar = qfalse;
+		boba_fett = qfalse;
 		// in fact, alt-charge shots will not call the regular impact functions
 		if (ent->alt_fire)
 		{
@@ -2085,7 +2108,7 @@ void G_MissileImpact_MD(gentity_t* ent, trace_t* trace, const int hit_loc = HL_N
 		}
 	}
 
-	if (beskar)
+	if (beskar || boba_fett)
 	{
 		bounce = qfalse;
 		// Check to see if there is a bounce count
@@ -2552,11 +2575,33 @@ void G_MissileImpactJKA(gentity_t* ent, trace_t* trace, const int hit_loc = HL_N
 		&& ent->methodOfDeath != MOD_CONC
 		&& (!Q_irand(0, 1)));
 
+	auto boba_fett = static_cast<qboolean>((other->flags & FL_BOBAFETT)
+		&& !ent->splashDamage
+		&& !ent->splashRadius
+		&& ent->methodOfDeath != MOD_SABER
+		&& ent->methodOfDeath != MOD_REPEATER_ALT
+		&& ent->methodOfDeath != MOD_FLECHETTE_ALT
+		&& ent->methodOfDeath != MOD_ROCKET
+		&& ent->methodOfDeath != MOD_ROCKET_ALT
+		&& ent->methodOfDeath != WP_NOGHRI_STICK
+		&& ent->methodOfDeath != MOD_CONC_ALT
+		&& ent->methodOfDeath != MOD_THERMAL
+		&& ent->methodOfDeath != MOD_THERMAL_ALT
+		&& ent->methodOfDeath != MOD_DEMP2
+		&& ent->methodOfDeath != MOD_DEMP2_ALT
+		&& ent->methodOfDeath != MOD_EXPLOSIVE
+		&& ent->methodOfDeath != MOD_DETPACK
+		&& ent->methodOfDeath != MOD_LASERTRIP
+		&& ent->methodOfDeath != MOD_LASERTRIP_ALT
+		&& ent->methodOfDeath != MOD_SEEKER
+		&& ent->methodOfDeath != MOD_CONC);
+
 	if (ent->dflags & DAMAGE_HEAVY_WEAP_CLASS)
 	{
 		// heavy class missiles generally never bounce.
 		bounce = qfalse;
 		beskar = qfalse;
+		boba_fett = qfalse;
 	}
 
 	if (other->flags & (FL_DMG_BY_HEAVY_WEAP_ONLY | FL_SHIELDED))
@@ -2578,6 +2623,7 @@ void G_MissileImpactJKA(gentity_t* ent, trace_t* trace, const int hit_loc = HL_N
 		// demp2 shots can never bounce
 		bounce = qfalse;
 		beskar = qfalse;
+		boba_fett = qfalse;
 		// in fact, alt-charge shots will not call the regular impact functions
 		if (ent->alt_fire)
 		{
@@ -2589,7 +2635,7 @@ void G_MissileImpactJKA(gentity_t* ent, trace_t* trace, const int hit_loc = HL_N
 		}
 	}
 
-	if (beskar)
+	if (beskar || boba_fett)
 	{
 		bounce = qfalse;
 		// Check to see if there is a bounce count

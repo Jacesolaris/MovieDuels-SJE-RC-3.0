@@ -342,10 +342,11 @@ void NPC_SetMiscDefaultData(gentity_t* ent)
 		ent->client->ps.forcePowerLevel[FP_LEVITATION] = FORCE_LEVEL_3;
 		ent->client->ps.forcePower = 100;
 		ent->NPC->scriptFlags |= SCF_NAV_CAN_FLY | SCF_FLY_WITH_JET | SCF_NAV_CAN_JUMP;
+		NPC->flags |= FL_UNDYING; // Can't Kill Boba, he's got plot armor!
 
-		if (!Q_stricmp("bobafett", ent->targetname) || !Q_stricmp("bobafett1", ent->targetname))
+		if (Q_stricmp("boba_fett", ent->NPC_type) == 0)
 		{
-			NPC->flags |= FL_UNDYING; // Can't Kill Boba, he's got plot armor!
+			ent->flags |= FL_BOBAFETT; //low-level shots bounce off, no knockback
 		}
 	}
 	else if (ent->client->NPC_class == CLASS_OBJECT)
