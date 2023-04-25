@@ -2123,6 +2123,7 @@ void G_MissileImpact_MD(gentity_t* ent, trace_t* trace, const int hit_loc = HL_N
 		}
 
 		G_BounceMissile(ent, trace);
+		NPC_SetAnim(other, SETANIM_TORSO, Q_irand(BOTH_PAIN1, BOTH_PAIN3), SETANIM_FLAG_OVERRIDE | SETANIM_FLAG_HOLD);
 
 		if (ent->owner)
 		{
@@ -2650,6 +2651,7 @@ void G_MissileImpactJKA(gentity_t* ent, trace_t* trace, const int hit_loc = HL_N
 		}
 
 		G_BounceMissile(ent, trace);
+		NPC_SetAnim(other, SETANIM_TORSO, Q_irand(BOTH_PAIN1, BOTH_PAIN3), SETANIM_FLAG_OVERRIDE | SETANIM_FLAG_HOLD);
 
 		if (ent->owner)
 		{

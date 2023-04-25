@@ -9599,7 +9599,6 @@ void ClientThink_real(gentity_t* ent, usercmd_t* ucmd)
 						{
 							//holding attack
 							NPC_SetAnim(ent, SETANIM_BOTH, BOTH_GRAPPLE_FIRE, SETANIM_FLAG_OVERRIDE | SETANIM_FLAG_HOLD, 0);
-							//gi.Printf(S_COLOR_YELLOW"g_active grapple attack\n");
 						}
 
 						G_SoundOnEnt(ent, CHAN_ITEM, "sound/weapons/grapple/hookfire.wav");
@@ -9635,7 +9634,7 @@ void ClientThink_real(gentity_t* ent, usercmd_t* ucmd)
 				}
 				if (ent->s.weapon != WP_MELEE)
 				{
-					CG_ChangeWeapon(WP_MELEE);
+					clear_to_activate_grapple = qfalse;
 				}
 
 				if (clear_to_activate_grapple)
