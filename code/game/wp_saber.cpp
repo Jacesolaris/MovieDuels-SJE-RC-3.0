@@ -259,6 +259,7 @@ extern qboolean sab_beh_attack_vs_block(gentity_t* attacker, gentity_t* blocker,
 extern qboolean sab_beh_block_vs_attack(gentity_t* blocker, gentity_t* attacker, int saber_num, int blade_num,
 	vec3_t hit_loc);
 extern void g_fatigue_bp_knockaway(gentity_t* blocker);
+void G_Beskar_Attack_Bounce(const gentity_t* self, gentity_t* other);
 
 extern cvar_t* g_saberAutoBlocking;
 extern cvar_t* g_saberRealisticCombat;
@@ -2646,16 +2647,17 @@ qboolean WP_SaberApplyDamageJKA(gentity_t* ent, const float base_damage, const i
 	{
 		return qfalse;
 	}
+
 	for (int i = 0; i < numVictims; i++)
 	{
 		int d_flags = base_d_flags | DAMAGE_DEATH_KNOCKBACK | DAMAGE_NO_HIT_LOC;
+		gentity_t* victim = &g_entities[victimEntityNum[i]];
 
 		if (victimEntityNum[i] != ENTITYNUM_NONE && &g_entities[victimEntityNum[i]] != nullptr)
 		{
 			// Don't bother with this damage if the fraction is higher than the saber's fraction
 			if (dmgFraction[i] < saberHitFraction || broken_parry)
 			{
-				gentity_t* victim = &g_entities[victimEntityNum[i]];
 				if (!victim)
 				{
 					continue;
@@ -2719,6 +2721,13 @@ qboolean WP_SaberApplyDamageJKA(gentity_t* ent, const float base_damage, const i
 								totalDmg[i] = max_dmg;
 							}
 							//d_flags |= DAMAGE_NO_HIT_LOC;
+						}
+
+						if (victim->flags & FL_SABERDAMAGE_RESIST && (!Q_irand(0, 1)))
+						{
+							d_flags |= DAMAGE_NO_DAMAGE;
+							G_Beskar_Attack_Bounce(ent, victim);
+							G_Sound(ent, G_SoundIndex("sound/weapons/impacts/beskar_impact1.mp3"));
 						}
 						//clamp the dmg
 						if (victim->s.weapon != WP_SABER)
@@ -3102,13 +3111,13 @@ qboolean WP_SaberApplyDamageMD(gentity_t* ent, const float base_damage, const in
 	for (int i = 0; i < numVictims; i++)
 	{
 		int d_flags = base_d_flags | DAMAGE_DEATH_KNOCKBACK | DAMAGE_NO_HIT_LOC;
+		gentity_t* victim = &g_entities[victimEntityNum[i]];
 
 		if (victimEntityNum[i] != ENTITYNUM_NONE && &g_entities[victimEntityNum[i]] != nullptr)
 		{
 			// Don't bother with this damage if the fraction is higher than the saber's fraction
 			if (dmgFraction[i] < saberHitFraction || broken_parry)
 			{
-				gentity_t* victim = &g_entities[victimEntityNum[i]];
 				if (!victim)
 				{
 					continue;
@@ -3166,8 +3175,9 @@ qboolean WP_SaberApplyDamageMD(gentity_t* ent, const float base_damage, const in
 							static_cast<saberMoveName_t>(ent->client->ps.saber_move));
 
 						if (victim->client
-							&& (victim->s.weapon == WP_SABER || victim->client->NPC_class == CLASS_REBORN || victim->
-								client->NPC_class == CLASS_WAMPA)
+							&& (victim->s.weapon == WP_SABER
+								|| victim->client->NPC_class == CLASS_REBORN
+								|| victim->client->NPC_class == CLASS_WAMPA)
 							&& !g_saberRealisticCombat->integer)
 						{
 							//dmg vs other saber fighters is modded by hitloc and capped
@@ -3185,6 +3195,14 @@ qboolean WP_SaberApplyDamageMD(gentity_t* ent, const float base_damage, const in
 								totalDmg[i] = max_dmg;
 							}
 						}
+
+						if (victim->flags & FL_SABERDAMAGE_RESIST && (!Q_irand(0, 1)))
+						{
+							d_flags |= DAMAGE_NO_DAMAGE;
+							G_Beskar_Attack_Bounce(ent, victim);
+							G_Sound(ent, G_SoundIndex("sound/weapons/impacts/beskar_impact1.mp3"));
+						}
+
 						if (!saber_in_special) // not doing a special move
 						{
 							if (victim->s.weapon != WP_SABER || !Q_stricmp("func_breakable", victim->classname))
@@ -3776,13 +3794,13 @@ qboolean WP_SaberApplyDamageMD(gentity_t* ent, const float base_damage, const in
 								ent->client->ps.saberEventFlags |= SEF_HITOBJECT;
 							}
 						}
+						}
 					}
 				}
 			}
 		}
-	}
 	return did_damage;
-}
+	}
 
 void WP_SaberDamageAdd(const float tr_dmg, const int tr_victim_entity_num, vec3_t tr_dmg_dir, vec3_t tr_dmg_blade_vec,
 	vec3_t tr_dmg_normal,
@@ -4758,7 +4776,7 @@ void WP_SaberKnockaway(const gentity_t* attacker, trace_t* tr)
 	{
 		g_saberFlashTime = level.time - 50;
 		VectorCopy(saberHitLocation, g_saberFlashPos);
-	}
+}
 }
 
 qboolean G_InCinematicSaberAnim(const gentity_t* self)
@@ -5161,7 +5179,7 @@ qboolean WP_SaberDamageForTrace(const int ignore, vec3_t start, vec3_t end, floa
 				}
 				return qfalse; // Exit, but we didn't hit the wall.
 			}
-		}
+			}
 
 		if (hit_ent->takedamage)
 		{
@@ -5342,10 +5360,10 @@ qboolean WP_SaberDamageForTrace(const int ignore, vec3_t start, vec3_t end, floa
 				}
 			}
 		}
-	}
+		}
 
 	return qfalse;
-}
+						}
 
 constexpr auto LOCK_IDEAL_DIST_TOP = 32.0f;
 constexpr auto LOCK_IDEAL_DIST_CIRCLE = 48.0f;
@@ -5833,7 +5851,7 @@ qboolean WP_SabersCheckLock2(gentity_t* attacker, gentity_t* defender, sabersLoc
 				Com_Printf("%s starting saber lock, anim = %s, %d frames to go!\n", defender->NPC_type, anim_table[defAnim].name, advance);
 			}
 #endif
-		}
+	}
 	}
 	VectorClear(attacker->client->ps.velocity);
 	VectorClear(attacker->client->ps.moveDir);
@@ -8343,16 +8361,16 @@ void WP_SaberDamageTrace(gentity_t* ent, int saber_num, int blade_num)
 									hit_owner->client->ps.saberBounceMove = LS_NONE;
 								}
 							}
-						}
+							}
 						collision_resolved = qtrue;
+						}
 					}
-				}
 				else
 				{
 					//some other kind of in-hand saber collision
 				}
+				}
 			}
-		}
 		else
 		{
 			//some kind of in-flight collision
@@ -8591,7 +8609,7 @@ void WP_SaberDamageTrace(gentity_t* ent, int saber_num, int blade_num)
 				}
 			}
 		}
-	}
+		}
 
 	if (ent->client->ps.saberLockTime > level.time)
 	{
@@ -8697,7 +8715,7 @@ void WP_SaberDamageTrace(gentity_t* ent, int saber_num, int blade_num)
 			AddSightEvent(ent, ent->currentOrigin, 256, AEL_DISCOVERED, 50);
 		}
 	}
-}
+	}
 
 //////SERENITYJEDIENGINE MODE //////////////////////////////////////////////////////////////////////////
 
@@ -16797,7 +16815,7 @@ qboolean WP_SaberBlockNonRandom(gentity_t* self, vec3_t hitloc, const qboolean m
 
 	self->client->ps.userInt3 &= ~(1 << FLAG_PREBLOCK);
 	return qtrue;
-}
+		}
 
 qboolean WP_SaberMBlockDirection(gentity_t* self, vec3_t hitloc, const qboolean missileBlock)
 {
@@ -27406,7 +27424,7 @@ void ForceRepulse(gentity_t* self, qboolean pull, qboolean fake)
 							else
 							{
 								//NPC and force-push/pull at level 2 or higher
-								WP_ForceKnockdown(push_target[x], self, pull,static_cast<qboolean>(!pull && knockback > 100), qfalse);
+								WP_ForceKnockdown(push_target[x], self, pull, static_cast<qboolean>(!pull && knockback > 100), qfalse);
 								if (g_SerenityJediEngineMode->integer)
 								{
 									if (pull)
@@ -29781,7 +29799,7 @@ void ForceGrip(gentity_t* self)
 			//can't grip a vehicle
 			return;
 		}
-	}
+}
 
 	if (trace_ent->client)
 	{
@@ -37064,7 +37082,7 @@ void ForceGrasp(gentity_t* self)
 			//can't grip a vehicle
 			return;
 		}
-	}
+}
 	if (trace_ent->client)
 	{
 		if (trace_ent->client->ps.forceJumpZStart)
@@ -37422,7 +37440,7 @@ void ForceGrasp(gentity_t* self)
 			G_SoundOnEnt(self, CHAN_BODY, "sound/weapons/force/grip.wav");
 		}
 	}
-	}
+}
 
 extern void WP_FireBlast(gentity_t* ent, int force_level);
 
@@ -38415,9 +38433,9 @@ void WP_ForcePowerStop(gentity_t* self, const forcePowers_t force_power)
 						if (gripVel > 500.0f)
 						{
 							gripVel = 500.0f;
-					}
+						}
 						VectorScale(grip_ent->client->ps.velocity, gripVel, grip_ent->client->ps.velocity);
-				}
+					}
 
 					//FIXME: they probably dropped their weapon, should we make them flee?  Or should AI handle no-weapon behavior?
 					//rww - RAGDOLL_BEGIN
@@ -38432,7 +38450,7 @@ void WP_ForcePowerStop(gentity_t* self, const forcePowers_t force_power)
 						if (grip_ent->health > 0)
 						{
 							G_AddEvent(grip_ent, EV_WATER_CLEAR, 0);
-						}
+					}
 						if (grip_ent->client->ps.forcePowerDebounce[FP_PUSH] > level.time)
 						{
 							//they probably pushed out of it
@@ -38494,7 +38512,7 @@ void WP_ForcePowerStop(gentity_t* self, const forcePowers_t force_power)
 								G_AngerAlert(grip_ent);
 							}
 						}
-					}
+				}
 			}
 				else
 				{
@@ -38726,9 +38744,9 @@ void WP_ForcePowerStop(gentity_t* self, const forcePowers_t force_power)
 						if (grip_vel > 500.0f)
 						{
 							grip_vel = 500.0f;
-					}
+						}
 						VectorScale(grip_ent->client->ps.velocity, grip_vel, grip_ent->client->ps.velocity);
-				}
+					}
 
 					//FIXME: they probably dropped their weapon, should we make them flee?  Or should AI handle no-weapon behavior?
 					//rww - RAGDOLL_BEGIN
@@ -38743,7 +38761,7 @@ void WP_ForcePowerStop(gentity_t* self, const forcePowers_t force_power)
 						if (grip_ent->health > 0)
 						{
 							G_AddEvent(grip_ent, EV_WATER_CLEAR, 0);
-						}
+					}
 						if (grip_ent->client->ps.forcePowerDebounce[FP_PUSH] > level.time)
 						{
 							//they probably pushed out of it
@@ -38805,7 +38823,7 @@ void WP_ForcePowerStop(gentity_t* self, const forcePowers_t force_power)
 								G_AngerAlert(grip_ent);
 							}
 						}
-					}
+				}
 			}
 				else
 				{
@@ -38886,8 +38904,8 @@ void WP_ForcePowerStop(gentity_t* self, const forcePowers_t force_power)
 		break;
 	default:
 		break;
-}
-}
+				}
+			}
 
 void WP_ForceForceThrow(gentity_t* thrower)
 {
@@ -39157,7 +39175,7 @@ static void wp_force_power_run(gentity_t* self, forcePowers_t force_power, userc
 				//invalid or freed ent
 				WP_ForcePowerStop(self, FP_GRIP);
 				return;
-	}
+			}
 #ifndef JK2_RAGDOLL_GRIPNOHEALTH
 			if (grip_ent->health <= 0 && grip_ent->takedamage)
 			{//either invalid ent, or dead ent
@@ -39173,7 +39191,7 @@ static void wp_force_power_run(gentity_t* self, forcePowers_t force_power, userc
 				{
 					WP_ForcePowerStop(self, FP_GRIP);
 					return;
-				}
+		}
 			if (grip_ent->client && grip_ent->client->moveType == MT_FLYSWIM && VectorLengthSquared(
 				grip_ent->client->ps.velocity) > 300 * 300)
 			{
@@ -39624,7 +39642,7 @@ static void wp_force_power_run(gentity_t* self, forcePowers_t force_power, userc
 				}
 			}
 	}
-}
+	}
 
 	if (self->client->ps.forcePowersActive & 1 << FP_GRIP)
 	{
@@ -40010,7 +40028,7 @@ static void wp_force_power_run(gentity_t* self, forcePowers_t force_power, userc
 				//invalid or freed ent
 				WP_ForcePowerStop(self, FP_GRASP);
 				return;
-	}
+			}
 #ifndef JK2_RAGDOLL_GRIPNOHEALTH
 			if (grip_ent->health <= 0 && grip_ent->takedamage)
 			{//either invalid ent, or dead ent
@@ -40026,7 +40044,7 @@ static void wp_force_power_run(gentity_t* self, forcePowers_t force_power, userc
 				{
 					WP_ForcePowerStop(self, FP_GRASP);
 					return;
-				}
+		}
 			if (grip_ent->client && grip_ent->client->moveType == MT_FLYSWIM && VectorLengthSquared(
 				grip_ent->client->ps.velocity) > 300 * 300)
 			{
@@ -40392,8 +40410,8 @@ static void wp_force_power_run(gentity_t* self, forcePowers_t force_power, userc
 				}
 				grip_ent->painDebounceTime = level.time + 2000;
 			}
-		}
 	}
+}
 	break;
 	case FP_REPULSE:
 	{
@@ -40594,8 +40612,8 @@ static void wp_force_power_run(gentity_t* self, forcePowers_t force_power, userc
 		break;
 	default:
 		break;
-}
-}
+		}
+	}
 
 void WP_CheckForcedPowers(gentity_t* self, usercmd_t* ucmd)
 {
@@ -41374,6 +41392,27 @@ void G_SaberBounce(const gentity_t* self, gentity_t* other)
 		return;
 	}
 
+	if (self->client->ps.saberBlocked == BLOCKED_NONE)
+	{
+		if (!PM_SaberInSpecialAttack(self->client->ps.torsoAnim))
+		{
+			if (SaberAttacking(self))
+			{
+				// Saber is in attack, use bounce for this attack.
+				self->client->ps.saberBounceMove = PM_SaberBounceForAttack(self->client->ps.saber_move);
+				self->client->ps.saberBlocked = BLOCKED_BOUNCE_MOVE;
+			}
+			else
+			{
+				// Saber is in defense, use defensive bounce.
+				self->client->ps.saberBlocked = BLOCKED_ATK_BOUNCE;
+			}
+		}
+	}
+}
+
+void G_Beskar_Attack_Bounce(const gentity_t* self, gentity_t* other)
+{
 	if (self->client->ps.saberBlocked == BLOCKED_NONE)
 	{
 		if (!PM_SaberInSpecialAttack(self->client->ps.torsoAnim))

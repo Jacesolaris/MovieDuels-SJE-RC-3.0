@@ -344,7 +344,7 @@ void NPC_SetMiscDefaultData(gentity_t* ent)
 		ent->NPC->scriptFlags |= SCF_NAV_CAN_FLY | SCF_FLY_WITH_JET | SCF_NAV_CAN_JUMP;
 		NPC->flags |= FL_UNDYING; // Can't Kill Boba, he's got plot armor!
 
-		if (Q_stricmp("boba_fett", ent->NPC_type) == 0)
+		if (Q_stricmp("boba_fett", ent->NPC_type) == 0 || Q_stricmp("boba_fett_esb", ent->NPC_type) == 0)
 		{
 			ent->flags |= FL_BOBAFETT; //low-level shots bounce off, no knockback
 		}
@@ -355,8 +355,9 @@ void NPC_SetMiscDefaultData(gentity_t* ent)
 		NPC->flags |= FL_UNDYING; // Can't Kill Boba
 		ent->flags |= FL_SHIELDED; //reflect normal shots
 	}
-	else if (ent->client->NPC_class == CLASS_MANDALORIAN || ent->client->NPC_class == CLASS_JANGO || ent->client->
-		NPC_class == CLASS_JANGODUAL)
+	else if (ent->client->NPC_class == CLASS_MANDALORIAN 
+		|| ent->client->NPC_class == CLASS_JANGO
+		|| ent->client->NPC_class == CLASS_JANGODUAL)
 	{
 		//set some stuff, precache
 		ent->client->ps.forcePowersKnown |= 1 << FP_LEVITATION;
@@ -365,6 +366,15 @@ void NPC_SetMiscDefaultData(gentity_t* ent)
 		ent->NPC->scriptFlags |= SCF_NAV_CAN_FLY | SCF_FLY_WITH_JET | SCF_NAV_CAN_JUMP;
 
 		ent->behaviorSet[BSET_FLEE] = nullptr;
+
+		if (Q_stricmp("boba_fett_mand1", ent->NPC_type) == 0
+			|| Q_stricmp("boba_fett_mand2", ent->NPC_type) == 0
+			|| Q_stricmp("boba_fett_nohelmet", ent->NPC_type) == 0
+			|| Q_stricmp("boba_fett_nohelmet2", ent->NPC_type) == 0)
+		{
+			ent->flags |= FL_DINDJARIN; //low-level shots bounce off, no knockback
+		}
+		ent->flags |= FL_SABERDAMAGE_RESIST; //Partially resistant to sabers
 	}
 	else if (NPC->client->ps.weapon == WP_CLONECARBINE || NPC->client->ps.weapon == WP_CLONERIFLE ||
 		NPC->client->ps.weapon == WP_CLONECOMMANDO || NPC->client->ps.weapon == WP_REBELRIFLE)
@@ -444,6 +454,7 @@ void NPC_SetMiscDefaultData(gentity_t* ent)
 	if (Q_stricmp("md_dindjarin", ent->NPC_type) == 0)
 	{
 		ent->flags |= FL_DINDJARIN; //low-level shots bounce off, no knockback
+		ent->flags |= FL_SABERDAMAGE_RESIST; //Partially resistant to sabers
 	}
 
 	if (Q_stricmpn(ent->NPC_type, "hazardtrooper", 13) == 0)

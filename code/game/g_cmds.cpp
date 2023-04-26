@@ -296,11 +296,16 @@ void G_Give(gentity_t* ent, const char* name, const char* args, const int argc)
 					if (ent->client && ent->client->NPC_class == CLASS_BOBAFETT
 						|| ent->client->NPC_class == CLASS_JANGO
 						|| ent->client->NPC_class == CLASS_JANGODUAL
+						|| ent->client->NPC_class == CLASS_MANDALORIAN
 						|| !Q_stricmp("md_dindjarin", ent->NPC_type))
 					{
 						ent->client->ps.inventory[INV_GRAPPLEHOOK] = 1;
 						
-						if (!Q_stricmp("md_dindjarin", ent->NPC_type))
+						if (!Q_stricmp("md_dindjarin", ent->NPC_type)
+							|| ent->client->NPC_class == CLASS_JANGO
+							|| ent->client->NPC_class == CLASS_JANGODUAL
+							|| ent->client->NPC_class == CLASS_MANDALORIAN
+							|| !Q_stricmp("boba_fett_esb", ent->NPC_type))
 						{
 							ent->flags |= FL_DINDJARIN; //low-level shots bounce off, no knockback
 						}
@@ -309,6 +314,7 @@ void G_Give(gentity_t* ent, const char* name, const char* args, const int argc)
 						{
 							ent->flags |= FL_BOBAFETT; //low-level shots bounce off, no knockback
 						}
+						ent->flags |= FL_SABERDAMAGE_RESIST; //Partially resistant to sabers
 					}
 					else
 					{

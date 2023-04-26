@@ -119,8 +119,8 @@ void WP_FireBryarPistol(gentity_t* ent, const qboolean alt_fire)
 			}
 			else
 			{// add some slop to the fire direction for NPC,s
-				angs[PITCH] += Q_flrand(-1.0f, 1.0f) * BLASTER_MAIN_SPREAD;
-				angs[YAW] += Q_flrand(-1.0f, 1.0f) * BLASTER_MAIN_SPREAD;
+				angs[PITCH] += Q_flrand(-0.0f, 0.5f);
+				angs[YAW] += Q_flrand(-0.0f, 0.5f);
 			}
 		}
 
@@ -278,8 +278,8 @@ void WP_FireBryarPistolDuals(gentity_t* ent, const qboolean alt_fire, const qboo
 			}
 			else
 			{// add some slop to the fire direction for NPC,s
-				angs[PITCH] += Q_flrand(-1.0f, 1.0f) * BLASTER_MAIN_SPREAD;
-				angs[YAW] += Q_flrand(-1.0f, 1.0f) * BLASTER_MAIN_SPREAD;
+				angs[PITCH] += Q_flrand(-0.0f, 0.5f);
+				angs[YAW] += Q_flrand(-0.0f, 0.5f);
 			}
 		}
 
@@ -433,8 +433,8 @@ void WP_FireReyPistol(gentity_t* ent, const qboolean alt_fire)
 			}
 			else
 			{// add some slop to the fire direction for NPC,s
-				angs[PITCH] += Q_flrand(-1.0f, 1.0f) * BLASTER_MAIN_SPREAD;
-				angs[YAW] += Q_flrand(-1.0f, 1.0f) * BLASTER_MAIN_SPREAD;
+				angs[PITCH] += Q_flrand(-0.0f, 0.5f);
+				angs[YAW] += Q_flrand(-0.0f, 0.5f);
 			}
 		}
 
@@ -591,8 +591,8 @@ void WP_FireReyPistolDuals(gentity_t* ent, const qboolean alt_fire, const qboole
 			}
 			else
 			{// add some slop to the fire direction for NPC,s
-				angs[PITCH] += Q_flrand(-1.0f, 1.0f) * BLASTER_MAIN_SPREAD;
-				angs[YAW] += Q_flrand(-1.0f, 1.0f) * BLASTER_MAIN_SPREAD;
+				angs[PITCH] += Q_flrand(-0.0f, 0.5f);
+				angs[YAW] += Q_flrand(-0.0f, 0.5f);
 			}
 		}
 
@@ -745,8 +745,8 @@ void WP_FireClonePistol(gentity_t* ent, const qboolean alt_fire)
 			}
 			else
 			{// add some slop to the fire direction for NPC,s
-				angs[PITCH] += Q_flrand(-1.0f, 1.0f) * BLASTER_MAIN_SPREAD;
-				angs[YAW] += Q_flrand(-1.0f, 1.0f) * BLASTER_MAIN_SPREAD;
+				angs[PITCH] += Q_flrand(-0.0f, 0.5f);
+				angs[YAW] += Q_flrand(-0.0f, 0.5f);
 			}
 		}
 
@@ -903,8 +903,8 @@ void WP_FireClonePistolDuals(gentity_t* ent, const qboolean alt_fire, const qboo
 			}
 			else
 			{// add some slop to the fire direction for NPC,s
-				angs[PITCH] += Q_flrand(-1.0f, 1.0f) * BLASTER_MAIN_SPREAD;
-				angs[YAW] += Q_flrand(-1.0f, 1.0f) * BLASTER_MAIN_SPREAD;
+				angs[PITCH] += Q_flrand(-0.0f, 0.5f);
+				angs[YAW] += Q_flrand(-0.0f, 0.5f);
 			}
 		}
 
@@ -1053,8 +1053,8 @@ void WP_FireSBDPistol(gentity_t* ent, const qboolean alt_fire)
 			}
 			else
 			{// add some slop to the fire direction for NPC,s
-				angs[PITCH] += Q_flrand(-1.0f, 1.0f) * BLASTER_MAIN_SPREAD;
-				angs[YAW] += Q_flrand(-1.0f, 1.0f) * BLASTER_MAIN_SPREAD;
+				angs[PITCH] += Q_flrand(-0.0f, 0.5f);
+				angs[YAW] += Q_flrand(-0.0f, 0.5f);
 			}
 		}
 

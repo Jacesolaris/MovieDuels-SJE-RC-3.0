@@ -193,8 +193,8 @@ void WP_FireRepeater(gentity_t* ent, const qboolean alt_fire)
 			}
 			else
 			{// add some slop to the fire direction for NPC,s
-				angs[PITCH] += Q_flrand(-1.0f, 1.0f) * BLASTER_MAIN_SPREAD;
-				angs[YAW] += Q_flrand(-1.0f, 1.0f) * BLASTER_MAIN_SPREAD;
+				angs[PITCH] += Q_flrand(-0.0f, 0.5f);
+				angs[YAW] += Q_flrand(-0.0f, 0.5f);
 			}
 		}
 

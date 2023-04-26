@@ -201,8 +201,8 @@ void WP_FireBlaster(gentity_t* ent, const qboolean alt_fire)
 			}
 			else
 			{// add some slop to the fire direction for NPC,s
-				angs[PITCH] += Q_flrand(-1.0f, 1.0f) * BLASTER_MAIN_SPREAD;
-				angs[YAW] += Q_flrand(-1.0f, 1.0f) * BLASTER_MAIN_SPREAD;
+				angs[PITCH] += Q_flrand(-0.0f, 0.5f);
+				angs[YAW] += Q_flrand(-0.0f, 0.5f);
 			}
 		}
 	}
@@ -380,8 +380,8 @@ void WP_FireBattleDroid(gentity_t* ent, const qboolean alt_fire)
 			}
 			else
 			{// add some slop to the fire direction for NPC,s
-				angs[PITCH] += Q_flrand(-1.0f, 1.0f) * BLASTER_MAIN_SPREAD;
-				angs[YAW] += Q_flrand(-1.0f, 1.0f) * BLASTER_MAIN_SPREAD;
+				angs[PITCH] += Q_flrand(-0.0f, 0.5f);
+				angs[YAW] += Q_flrand(-0.0f, 0.5f);
 			}
 		}
 	}
@@ -560,8 +560,8 @@ void WP_FireFirstOrder(gentity_t* ent, const qboolean alt_fire)
 			}
 			else
 			{// add some slop to the fire direction for NPC,s
-				angs[PITCH] += Q_flrand(-1.0f, 1.0f) * BLASTER_MAIN_SPREAD;
-				angs[YAW] += Q_flrand(-1.0f, 1.0f) * BLASTER_MAIN_SPREAD;
+				angs[PITCH] += Q_flrand(-0.0f, 0.5f);
+				angs[YAW] += Q_flrand(-0.0f, 0.5f);
 			}
 		}
 	}
@@ -746,8 +746,8 @@ void WP_FireRebelBlaster(gentity_t* ent, const qboolean alt_fire)
 			}
 			else
 			{// add some slop to the fire direction for NPC,s
-				angs[PITCH] += Q_flrand(-1.0f, 1.0f) * BLASTER_MAIN_SPREAD;
-				angs[YAW] += Q_flrand(-1.0f, 1.0f) * BLASTER_MAIN_SPREAD;
+				angs[PITCH] += Q_flrand(-0.0f, 0.5f);
+				angs[YAW] += Q_flrand(-0.0f, 0.5f);
 			}
 		}
 	}
@@ -836,8 +836,8 @@ void WP_FireRebelBlasterDuals(gentity_t* ent, const qboolean alt_fire, const qbo
 			}
 			else
 			{// add some slop to the fire direction for NPC,s
-				angs[PITCH] += Q_flrand(-1.0f, 1.0f) * BLASTER_MAIN_SPREAD;
-				angs[YAW] += Q_flrand(-1.0f, 1.0f) * BLASTER_MAIN_SPREAD;
+				angs[PITCH] += Q_flrand(-0.0f, 0.5f);
+				angs[YAW] += Q_flrand(-0.0f, 0.5f);
 			}
 		}
 	}
@@ -1022,8 +1022,8 @@ void WP_FireRebelRifle(gentity_t* ent, const qboolean alt_fire)
 			}
 			else
 			{// add some slop to the fire direction for NPC,s
-				angs[PITCH] += Q_flrand(-1.0f, 1.0f) * BLASTER_MAIN_SPREAD;
-				angs[YAW] += Q_flrand(-1.0f, 1.0f) * BLASTER_MAIN_SPREAD;
+				angs[PITCH] += Q_flrand(-0.0f, 0.5f);
+				angs[YAW] += Q_flrand(-0.0f, 0.5f);
 			}
 		}
 	}
@@ -1480,8 +1480,8 @@ void WP_FireJangoPistol(gentity_t* ent, const qboolean alt_fire, const qboolean 
 			}
 			else
 			{// add some slop to the fire direction for NPC,s
-				angs[PITCH] += Q_flrand(-1.0f, 1.0f) * BLASTER_MAIN_SPREAD;
-				angs[YAW] += Q_flrand(-1.0f, 1.0f) * BLASTER_MAIN_SPREAD;
+				angs[PITCH] += Q_flrand(-0.0f, 0.5f);
+				angs[YAW] += Q_flrand(-0.0f, 0.5f);
 			}
 		}
 
@@ -1580,8 +1580,8 @@ void WP_FireWristPistol(gentity_t* ent, const qboolean alt_fire)
 			}
 			else
 			{// add some slop to the fire direction for NPC,s
-				angs[PITCH] += Q_flrand(-1.0f, 1.0f) * BLASTER_MAIN_SPREAD;
-				angs[YAW] += Q_flrand(-1.0f, 1.0f) * BLASTER_MAIN_SPREAD;
+				angs[PITCH] += Q_flrand(-0.0f, 0.5f);
+				angs[YAW] += Q_flrand(-0.0f, 0.5f);
 			}
 		}
 
@@ -1673,8 +1673,8 @@ void WP_FireJangoDualPistol(gentity_t* ent, const qboolean alt_fire)
 			}
 			else
 			{// add some slop to the fire direction for NPC,s
-				angs[PITCH] += Q_flrand(-1.0f, 1.0f) * BLASTER_MAIN_SPREAD;
-				angs[YAW] += Q_flrand(-1.0f, 1.0f) * BLASTER_MAIN_SPREAD;
+				angs[PITCH] += Q_flrand(-0.0f, 0.5f);
+				angs[YAW] += Q_flrand(-0.0f, 0.5f);
 			}
 		}
 
@@ -1766,8 +1766,8 @@ void WP_FireJangoFPPistolDuals(gentity_t* ent, const qboolean alt_fire, const qb
 			}
 			else
 			{// add some slop to the fire direction for NPC,s
-				angs[PITCH] += Q_flrand(-1.0f, 1.0f) * BLASTER_MAIN_SPREAD;
-				angs[YAW] += Q_flrand(-1.0f, 1.0f) * BLASTER_MAIN_SPREAD;
+				angs[PITCH] += Q_flrand(-0.0f, 0.5f);
+				angs[YAW] += Q_flrand(-0.0f, 0.5f);
 			}
 		}
 
@@ -1954,8 +1954,8 @@ void WP_FireBobaRifle(gentity_t* ent, const qboolean alt_fire)
 			}
 			else
 			{// add some slop to the fire direction for NPC,s
-				angs[PITCH] += Q_flrand(-1.0f, 1.0f) * BLASTER_MAIN_SPREAD;
-				angs[YAW] += Q_flrand(-1.0f, 1.0f) * BLASTER_MAIN_SPREAD;
+				angs[PITCH] += Q_flrand(-0.0f, 0.5f);
+				angs[YAW] += Q_flrand(-0.0f, 0.5f);
 			}
 		}
 	}
@@ -2184,8 +2184,8 @@ void WP_FireDroidekaDualPistol(gentity_t* ent, const qboolean alt_fire)
 		else
 		{
 			// add some slop to the fire direction for NPC,s
-			angs[PITCH] += Q_flrand(-1.0f, 1.0f) * BLASTER_MAIN_SPREAD;
-			angs[YAW] += Q_flrand(-1.0f, 1.0f) * BLASTER_MAIN_SPREAD;
+			angs[PITCH] += Q_flrand(-0.0f, 0.5f);
+			angs[YAW] += Q_flrand(-0.0f, 0.5f);
 		}
 
 		AngleVectors(angs, forward_vec, nullptr, nullptr);
@@ -2221,8 +2221,8 @@ void WP_FireDroidekaFPPistolDuals(gentity_t* ent, const qboolean alt_fire, const
 		else
 		{
 			// add some slop to the fire direction for NPC,s
-			angs[PITCH] += Q_flrand(-1.0f, 1.0f) * BLASTER_MAIN_SPREAD;
-			angs[YAW] += Q_flrand(-1.0f, 1.0f) * BLASTER_MAIN_SPREAD;
+			angs[PITCH] += Q_flrand(-0.0f, 0.5f);
+			angs[YAW] += Q_flrand(-0.0f, 0.5f);
 		}
 
 		AngleVectors(angs, forward_vec, nullptr, nullptr);
