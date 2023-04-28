@@ -305,7 +305,8 @@ void G_Give(gentity_t* ent, const char* name, const char* args, const int argc)
 							|| ent->client->NPC_class == CLASS_JANGO
 							|| ent->client->NPC_class == CLASS_JANGODUAL
 							|| ent->client->NPC_class == CLASS_MANDALORIAN
-							|| !Q_stricmp("boba_fett_esb", ent->NPC_type))
+							|| !Q_stricmp("boba_fett_esb", ent->NPC_type)
+							|| !Q_stricmp("md_boba_fett", ent->NPC_type))
 						{
 							ent->flags |= FL_DINDJARIN; //low-level shots bounce off, no knockback
 						}
@@ -621,6 +622,266 @@ void Cmd_Fx(const gentity_t* ent)
 	gi.Printf(S_COLOR_CYAN"fx origin <#><#><#>    fx origin 10 20 30\n");
 	gi.Printf(S_COLOR_CYAN"fx dir <#><#><#>       fx dir 0 0 -1\n\n");
 }
+
+
+void Cmd_Fx2(const gentity_t* ent)
+{
+	gentity_t* fx_ent = nullptr;
+
+	if (Q_stricmp(gi.argv(1), "play") == 0)
+	{
+		if (gi.argc() == 3)
+		{
+			vec3_t dir;
+			// I guess, only allow one active at a time
+			while ((fx_ent = G_Find(fx_ent, FOFS(classname), "cmd_fx2")) != nullptr)
+			{
+				G_FreeEntity(fx_ent);
+			}
+
+			fx_ent = G_Spawn();
+
+			fx_ent->fxFile = gi.argv(2);
+
+			// Move out in front of the person spawning the effect
+			AngleVectors(ent->currentAngles, dir, nullptr, nullptr);
+			VectorMA(ent->currentOrigin, 32, dir, fx_ent->s.origin);
+
+			SP_fx_runner(fx_ent);
+			fx_ent->delay = 2000; // adjusting delay
+			fx_ent->classname = "cmd_fx2"; //	and classname
+
+			return;
+		}
+	}
+	else if (Q_stricmp(gi.argv(1), "stop") == 0)
+	{
+		while ((fx_ent = G_Find(fx_ent, FOFS(classname), "cmd_fx2")) != nullptr)
+		{
+			G_FreeEntity(fx_ent);
+		}
+
+		return;
+	}
+	else if (Q_stricmp(gi.argv(1), "delay") == 0)
+	{
+		while ((fx_ent = G_Find(fx_ent, FOFS(classname), "cmd_fx2")) != nullptr)
+		{
+			if (gi.argc() == 3)
+			{
+				fx_ent->delay = atoi(gi.argv(2));
+			}
+			else
+			{
+				gi.Printf(S_COLOR_GREEN"FX2: current delay is: %i\n", fx_ent->delay);
+			}
+
+			return;
+		}
+	}
+	else if (Q_stricmp(gi.argv(1), "random") == 0)
+	{
+		while ((fx_ent = G_Find(fx_ent, FOFS(classname), "cmd_fx2")) != nullptr)
+		{
+			if (gi.argc() == 3)
+			{
+				fx_ent->random = atoi(gi.argv(2));
+			}
+			else
+			{
+				gi.Printf(S_COLOR_GREEN"FX2: current random is: %6.2f\n", fx_ent->random);
+			}
+
+			return;
+		}
+	}
+	else if (Q_stricmp(gi.argv(1), "origin") == 0)
+	{
+		while ((fx_ent = G_Find(fx_ent, FOFS(classname), "cmd_fx2")) != nullptr)
+		{
+			if (gi.argc() == 5)
+			{
+				fx_ent->s.origin[0] = atof(gi.argv(2));
+				fx_ent->s.origin[1] = atof(gi.argv(3));
+				fx_ent->s.origin[2] = atof(gi.argv(4));
+
+				G_SetOrigin(fx_ent, fx_ent->s.origin);
+			}
+			else
+			{
+				gi.Printf(S_COLOR_GREEN"FX2: current origin is: <%6.2f %6.2f %6.2f>\n",
+					fx_ent->currentOrigin[0], fx_ent->currentOrigin[1], fx_ent->currentOrigin[2]);
+			}
+
+			return;
+		}
+	}
+	else if (Q_stricmp(gi.argv(1), "dir") == 0)
+	{
+		while ((fx_ent = G_Find(fx_ent, FOFS(classname), "cmd_fx2")) != nullptr)
+		{
+			if (gi.argc() == 5)
+			{
+				fx_ent->s.angles[0] = atof(gi.argv(2));
+				fx_ent->s.angles[1] = atof(gi.argv(3));
+				fx_ent->s.angles[2] = atof(gi.argv(4));
+
+				if (!VectorNormalize(fx_ent->s.angles))
+				{
+					// must have been zero length
+					fx_ent->s.angles[2] = 1;
+				}
+			}
+			else
+			{
+				gi.Printf(S_COLOR_GREEN"FX2: current dir is: <%6.2f %6.2f %6.2f>\n",
+					fx_ent->s.angles[0], fx_ent->s.angles[1], fx_ent->s.angles[2]);
+			}
+
+			return;
+		}
+	}
+
+	gi.Printf(S_COLOR_CYAN"Fx2--------------------------------------------------------\n");
+	gi.Printf(S_COLOR_CYAN"commands:              sample usage:\n");
+	gi.Printf(S_COLOR_CYAN"----------------------------------------------------------\n");
+	gi.Printf(S_COLOR_CYAN"fx2 play <filename>     fx2 play sparks, fx2 play env/fire\n");
+	gi.Printf(S_COLOR_CYAN"fx2 stop                fx2 stop\n");
+	gi.Printf(S_COLOR_CYAN"fx2 delay <#>           fx2 delay 1000\n");
+	gi.Printf(S_COLOR_CYAN"fx2 random <#>          fx2 random 200\n");
+	gi.Printf(S_COLOR_CYAN"fx2 origin <#><#><#>    fx2 origin 10 20 30\n");
+	gi.Printf(S_COLOR_CYAN"fx2 dir <#><#><#>       fx2 dir 0 0 -1\n\n");
+}
+
+void Cmd_Fx3(const gentity_t* ent)
+{
+	gentity_t* fx_ent = nullptr;
+
+	if (Q_stricmp(gi.argv(1), "play") == 0)
+	{
+		if (gi.argc() == 3)
+		{
+			vec3_t dir;
+			// I guess, only allow one active at a time
+			while ((fx_ent = G_Find(fx_ent, FOFS(classname), "cmd_fx3")) != nullptr)
+			{
+				G_FreeEntity(fx_ent);
+			}
+
+			fx_ent = G_Spawn();
+
+			fx_ent->fxFile = gi.argv(2);
+
+			// Move out in front of the person spawning the effect
+			AngleVectors(ent->currentAngles, dir, nullptr, nullptr);
+			VectorMA(ent->currentOrigin, 32, dir, fx_ent->s.origin);
+
+			SP_fx_runner(fx_ent);
+			fx_ent->delay = 2000; // adjusting delay
+			fx_ent->classname = "cmd_fx3"; //	and classname
+
+			return;
+		}
+	}
+	else if (Q_stricmp(gi.argv(1), "stop") == 0)
+	{
+		while ((fx_ent = G_Find(fx_ent, FOFS(classname), "cmd_fx3")) != nullptr)
+		{
+			G_FreeEntity(fx_ent);
+		}
+
+		return;
+	}
+	else if (Q_stricmp(gi.argv(1), "delay") == 0)
+	{
+		while ((fx_ent = G_Find(fx_ent, FOFS(classname), "cmd_fx3")) != nullptr)
+		{
+			if (gi.argc() == 3)
+			{
+				fx_ent->delay = atoi(gi.argv(2));
+			}
+			else
+			{
+				gi.Printf(S_COLOR_GREEN"FX3: current delay is: %i\n", fx_ent->delay);
+			}
+
+			return;
+		}
+	}
+	else if (Q_stricmp(gi.argv(1), "random") == 0)
+	{
+		while ((fx_ent = G_Find(fx_ent, FOFS(classname), "cmd_fx3")) != nullptr)
+		{
+			if (gi.argc() == 3)
+			{
+				fx_ent->random = atoi(gi.argv(2));
+			}
+			else
+			{
+				gi.Printf(S_COLOR_GREEN"FX3: current random is: %6.2f\n", fx_ent->random);
+			}
+
+			return;
+		}
+	}
+	else if (Q_stricmp(gi.argv(1), "origin") == 0)
+	{
+		while ((fx_ent = G_Find(fx_ent, FOFS(classname), "cmd_fx3")) != nullptr)
+		{
+			if (gi.argc() == 5)
+			{
+				fx_ent->s.origin[0] = atof(gi.argv(2));
+				fx_ent->s.origin[1] = atof(gi.argv(3));
+				fx_ent->s.origin[2] = atof(gi.argv(4));
+
+				G_SetOrigin(fx_ent, fx_ent->s.origin);
+			}
+			else
+			{
+				gi.Printf(S_COLOR_GREEN"FX3: current origin is: <%6.2f %6.2f %6.2f>\n",
+					fx_ent->currentOrigin[0], fx_ent->currentOrigin[1], fx_ent->currentOrigin[2]);
+			}
+
+			return;
+		}
+	}
+	else if (Q_stricmp(gi.argv(1), "dir") == 0)
+	{
+		while ((fx_ent = G_Find(fx_ent, FOFS(classname), "cmd_fx3")) != nullptr)
+		{
+			if (gi.argc() == 5)
+			{
+				fx_ent->s.angles[0] = atof(gi.argv(2));
+				fx_ent->s.angles[1] = atof(gi.argv(3));
+				fx_ent->s.angles[2] = atof(gi.argv(4));
+
+				if (!VectorNormalize(fx_ent->s.angles))
+				{
+					// must have been zero length
+					fx_ent->s.angles[2] = 1;
+				}
+			}
+			else
+			{
+				gi.Printf(S_COLOR_GREEN"FX3: current dir is: <%6.2f %6.2f %6.2f>\n",
+					fx_ent->s.angles[0], fx_ent->s.angles[1], fx_ent->s.angles[2]);
+			}
+
+			return;
+		}
+	}
+
+	gi.Printf(S_COLOR_CYAN"Fx3--------------------------------------------------------\n");
+	gi.Printf(S_COLOR_CYAN"commands:              sample usage:\n");
+	gi.Printf(S_COLOR_CYAN"----------------------------------------------------------\n");
+	gi.Printf(S_COLOR_CYAN"fx3 play <filename>     fx3 play sparks, fx3 play env/fire\n");
+	gi.Printf(S_COLOR_CYAN"fx3 stop                fx3 stop\n");
+	gi.Printf(S_COLOR_CYAN"fx3 delay <#>           fx3 delay 1000\n");
+	gi.Printf(S_COLOR_CYAN"fx3 random <#>          fx3 random 200\n");
+	gi.Printf(S_COLOR_CYAN"fx3 origin <#><#><#>    fx3 origin 10 20 30\n");
+	gi.Printf(S_COLOR_CYAN"fx3 dir <#><#><#>       fx3 dir 0 0 -1\n\n");
+}
+
 
 /*
 ==================
@@ -2732,6 +2993,10 @@ void ClientCommand(const int client_num)
 		Cmd_UseSentry_f(ent);
 	else if (Q_stricmp(cmd, "fx") == 0)
 		Cmd_Fx(ent);
+	else if (Q_stricmp(cmd, "fx2") == 0)
+		Cmd_Fx2(ent);
+	else if (Q_stricmp(cmd, "fx3") == 0)
+		Cmd_Fx3(ent);
 	else if (Q_stricmp(cmd, "use_cloak") == 0)
 		Cmd_UseCloak_f(ent);
 	else if (Q_stricmp(cmd, "use_barrier") == 0)

@@ -2791,7 +2791,8 @@ void G_ChangePlayerModel(gentity_t* ent, const char* new_model)
 									|| ent->client->NPC_class == CLASS_JANGO
 									|| ent->client->NPC_class == CLASS_JANGODUAL
 									|| ent->client->NPC_class == CLASS_MANDALORIAN
-									|| !Q_stricmp("boba_fett_esb", ent->NPC_type))
+									|| !Q_stricmp("boba_fett_esb", ent->NPC_type)
+									|| !Q_stricmp("md_boba_fett", ent->NPC_type))
 								{
 									ent->flags |= FL_DINDJARIN; //low-level shots bounce off, no knockback
 								}
@@ -2963,7 +2964,8 @@ void G_ChangePlayerModel(gentity_t* ent, const char* new_model)
 									|| ent->client->NPC_class == CLASS_JANGO
 									|| ent->client->NPC_class == CLASS_JANGODUAL
 									|| ent->client->NPC_class == CLASS_MANDALORIAN
-									|| !Q_stricmp("boba_fett_esb", ent->NPC_type))
+									|| !Q_stricmp("boba_fett_esb", ent->NPC_type)
+									|| !Q_stricmp("md_boba_fett", ent->NPC_type))
 								{
 									ent->flags |= FL_DINDJARIN; //low-level shots bounce off, no knockback
 								}

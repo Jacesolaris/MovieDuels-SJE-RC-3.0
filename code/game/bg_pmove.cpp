@@ -68,7 +68,7 @@ extern saberMoveName_t PM_AttackMoveForQuad(int quad);
 extern qboolean PM_SaberInTransition(int move);
 extern qboolean PM_SaberInTransitionAny(int move);
 extern qboolean PM_SaberInBounce(int move);
-extern qboolean PM_SaberInSpecialAttack(int anim);
+extern qboolean pm_saber_in_special_attack(int anim);
 extern qboolean PM_SaberInAttack(int move);
 extern qboolean PM_InAnimForSaberMove(int anim, int saber_move);
 extern saberMoveName_t PM_SaberBounceForAttack(int move);
@@ -305,7 +305,7 @@ qboolean PM_CanForceFall()
 	if (!PM_InRoll(pm->ps) // not rolling
 		&& !PM_InKnockDown(pm->ps) // not knocked down
 		&& !PM_InDeathAnim() // not dead
-		&& !PM_SaberInSpecialAttack(pm->ps->torsoAnim) // not doing special attack
+		&& !pm_saber_in_special_attack(pm->ps->torsoAnim) // not doing special attack
 		&& !PM_SaberInAttack(pm->ps->saber_move) // not attacking
 		&& !(pm->ps->pm_flags & PMF_JUMP_HELD) // have to have released jump since last press
 		&& pm->cmd.upmove > 10 // pressing the jump button
@@ -2633,7 +2633,7 @@ static qboolean PM_CheckJump()
 			&& !PM_PainAnim(pm->ps->torsoAnim)
 			&& !PM_FlippingAnim(pm->ps->legsAnim)
 			&& !PM_SpinningAnim(pm->ps->legsAnim)
-			&& !PM_SaberInSpecialAttack(pm->ps->torsoAnim))
+			&& !pm_saber_in_special_attack(pm->ps->torsoAnim))
 		{
 			//HMM... do NPCs need this logic?
 			if (!PM_SaberInTransitionAny(pm->ps->saber_move) //not going to/from/between an attack anim
@@ -4050,7 +4050,7 @@ int PM_GetLandingAnim()
 		}
 	}
 
-	if (PM_SpinningAnim(anim) || PM_SaberInSpecialAttack(anim))
+	if (PM_SpinningAnim(anim) || pm_saber_in_special_attack(anim))
 	{
 		return -1;
 	}
@@ -4234,7 +4234,7 @@ qboolean PM_TryRoll()
 {
 	constexpr float roll_dist = 192; //was 64;
 
-	if (PM_SaberInAttack(pm->ps->saber_move) || PM_SaberInSpecialAttack(pm->ps->torsoAnim)
+	if (PM_SaberInAttack(pm->ps->saber_move) || pm_saber_in_special_attack(pm->ps->torsoAnim)
 		|| PM_SpinningSaberAnim(pm->ps->legsAnim)
 		|| PM_SaberInStart(pm->ps->saber_move))
 	{
@@ -4394,7 +4394,7 @@ qboolean pm_try_roll_md()
 {
 	constexpr float roll_dist = 192; //was 64;
 
-	if (PM_SaberInAttack(pm->ps->saber_move) || PM_SaberInSpecialAttack(pm->ps->torsoAnim)
+	if (PM_SaberInAttack(pm->ps->saber_move) || pm_saber_in_special_attack(pm->ps->torsoAnim)
 		|| PM_SpinningSaberAnim(pm->ps->legsAnim)
 		|| PM_SaberInStart(pm->ps->saber_move))
 	{
@@ -14751,13 +14751,13 @@ void PM_SetSaberMove(saberMoveName_t new_move)
 				//cancel out pre-block flag
 				pm->ps->userInt3 &= ~(1 << FLAG_PREBLOCK);
 			}
-			if (PM_SaberInAttack(new_move) || PM_SaberInSpecialAttack(anim))
+			if (PM_SaberInAttack(new_move) || pm_saber_in_special_attack(anim))
 			{
 				//playing an attack
 				if (pm->ps->saber_move != new_move)
 				{
 					//wasn't playing that attack before
-					if (PM_SaberInSpecialAttack(anim))
+					if (pm_saber_in_special_attack(anim))
 					{
 						WP_SaberSwingSound(pm->gent, 0, SWING_FAST);
 						if (!PM_InCartwheel(pm->ps->torsoAnim))
@@ -14787,7 +14787,7 @@ void PM_SetSaberMove(saberMoveName_t new_move)
 						}
 					}
 				}
-				else if (setflags & SETANIM_FLAG_RESTART && PM_SaberInSpecialAttack(anim))
+				else if (setflags & SETANIM_FLAG_RESTART && pm_saber_in_special_attack(anim))
 				{
 					//sigh, if restarted a special, then set the weaponTime *again*
 					if (!PM_InCartwheel(pm->ps->torsoAnim))
@@ -22781,7 +22781,7 @@ void Pmove(pmove_t* pmove)
 				if (!PM_SaberInAttack(pm->ps->saber_move)
 					&& !PM_SaberInDamageMove(pm->ps->saber_move)
 					&& !PM_SaberInTransitionAny(pm->ps->saber_move)
-					&& !PM_SaberInSpecialAttack(pm->ps->torsoAnim)
+					&& !pm_saber_in_special_attack(pm->ps->torsoAnim)
 					&& !PM_SaberDoDamageAnim(pm->ps->torsoAnim)
 					&& !PM_InSaberLock(pm->ps->torsoAnim)
 					&& !PM_SuperBreakWinAnim(pm->ps->torsoAnim)
@@ -23119,7 +23119,7 @@ qboolean BG_SaberInFullDamageMove(const playerState_t* ps)
 	//The player is attacking with a saber attack that does full damage
 	if (PM_SaberInAttack(ps->saber_move)
 		|| PM_SaberInDamageMove(ps->saber_move)
-		|| PM_SaberInSpecialAttack(ps->torsoAnim) //jacesolaris 2019 test for idle kill
+		|| pm_saber_in_special_attack(ps->torsoAnim) //jacesolaris 2019 test for idle kill
 		|| PM_SaberDoDamageAnim(ps->torsoAnim)
 		|| PM_SuperBreakWinAnim(ps->torsoAnim))
 	{

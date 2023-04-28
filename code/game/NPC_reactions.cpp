@@ -43,7 +43,7 @@ extern qboolean InFront(vec3_t spot, vec3_t from, vec3_t fromAngles, float thres
 extern void WP_DeactivateSaber(const gentity_t* self, qboolean clear_length = qfalse);
 extern qboolean PM_SaberInAttack(int move);
 extern qboolean PM_SaberInStart(int move);
-extern qboolean PM_SaberInSpecialAttack(int anim);
+extern qboolean pm_saber_in_special_attack(int anim);
 extern qboolean PM_SpinningSaberAnim(int anim);
 extern qboolean PM_SpinningAnim(int anim);
 extern qboolean PM_InKnockDown(const playerState_t* ps);
@@ -345,7 +345,7 @@ void NPC_ChoosePainAnimation(gentity_t* self, const gentity_t* other, const vec3
 			//not being force-gripped or force-drained
 			if (G_CheckForStrongAttackMomentum(self)
 				|| PM_SpinningAnim(self->client->ps.legsAnim)
-				|| PM_SaberInSpecialAttack(self->client->ps.torsoAnim)
+				|| pm_saber_in_special_attack(self->client->ps.torsoAnim)
 				|| PM_InKnockDown(&self->client->ps)
 				|| PM_RollingAnim(self->client->ps.legsAnim)
 				|| PM_FlippingAnim(self->client->ps.legsAnim) && !PM_InCartwheel(self->client->ps.legsAnim))

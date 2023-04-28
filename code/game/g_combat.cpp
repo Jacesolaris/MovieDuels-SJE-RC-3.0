@@ -98,7 +98,7 @@ extern qboolean PM_InRoll(const playerState_t* ps);
 extern qboolean PM_SpinningAnim(int anim);
 extern qboolean PM_RunningAnim(int anim);
 extern int PM_PowerLevelForSaberAnim(const playerState_t* ps, int saber_num = 0);
-extern qboolean PM_SaberInSpecialAttack(int anim);
+extern qboolean pm_saber_in_special_attack(int anim);
 extern qboolean PM_SpinningSaberAnim(int anim);
 extern qboolean PM_FlippingAnim(int anim);
 extern qboolean PM_InSpecialJump(int anim);
@@ -5714,7 +5714,7 @@ void PlayerPain(gentity_t* self, gentity_t* inflictor, gentity_t* attacker, cons
 			{
 				//FIXME: only strong-level saber attacks should make me play pain anim?
 				if (!G_CheckForStrongAttackMomentum(self) && !PM_SpinningSaberAnim(self->client->ps.legsAnim)
-					&& !PM_SaberInSpecialAttack(self->client->ps.torsoAnim)
+					&& !pm_saber_in_special_attack(self->client->ps.torsoAnim)
 					&& !PM_InKnockDown(&self->client->ps))
 				{
 					//strong attacks and spins cannot be interrupted by pain, no pain when in knockdown

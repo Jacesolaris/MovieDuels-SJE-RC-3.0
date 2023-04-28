@@ -71,7 +71,7 @@ extern void WP_DeactivateSaber(const gentity_t* self, qboolean clear_length = qf
 extern void WP_DeactivateLightSaber(const gentity_t* self, qboolean clear_length = qfalse);
 extern int PM_AnimLength(int index, animNumber_t anim);
 extern qboolean PM_SaberInStart(int move);
-extern qboolean PM_SaberInSpecialAttack(int anim);
+extern qboolean pm_saber_in_special_attack(int anim);
 extern qboolean PM_SaberInAttack(int move);
 extern qboolean PM_SaberInBounce(int move);
 extern qboolean PM_SaberInParry(int move);
@@ -396,7 +396,7 @@ qboolean npc_can_do_slap()
 		|| PM_InRoll(&NPC->client->ps)
 		|| PM_SuperBreakLoseAnim(NPC->client->ps.torsoAnim)
 		|| PM_SuperBreakWinAnim(NPC->client->ps.torsoAnim)
-		|| PM_SaberInSpecialAttack(NPC->client->ps.torsoAnim)
+		|| pm_saber_in_special_attack(NPC->client->ps.torsoAnim)
 		|| PM_InSpecialJump(NPC->client->ps.torsoAnim)
 		|| PM_SaberInBounce(NPC->client->ps.saber_move)
 		|| PM_SaberInKnockaway(NPC->client->ps.saber_move)
@@ -1820,7 +1820,7 @@ static void jedi_adjust_saber_anim_level(const gentity_t* self, const int new_le
 		|| PM_InRoll(&self->client->ps)
 		|| PM_SuperBreakLoseAnim(self->client->ps.torsoAnim)
 		|| PM_SuperBreakWinAnim(self->client->ps.torsoAnim)
-		|| PM_SaberInSpecialAttack(self->client->ps.torsoAnim)
+		|| pm_saber_in_special_attack(self->client->ps.torsoAnim)
 		|| PM_InSpecialJump(self->client->ps.torsoAnim)
 		|| PM_SaberInBounce(self->client->ps.saber_move)
 		|| PM_SaberInKnockaway(self->client->ps.saber_move)
@@ -4374,7 +4374,7 @@ evasionType_t jedi_check_flip_evasions(gentity_t* self, const float rightdot)
 	else if (self->client->NPC_class != CLASS_DESANN && self->client->NPC_class != CLASS_VADER
 		&& !PM_InRoll(&self->client->ps)
 		&& !PM_InKnockDown(&self->client->ps)
-		&& !PM_SaberInSpecialAttack(self->client->ps.torsoAnim)
+		&& !pm_saber_in_special_attack(self->client->ps.torsoAnim)
 		&& (self->NPC->rank == RANK_CREWMAN || self->NPC->rank >= RANK_LT)
 		&& Q_irand(0, 1))
 	{
@@ -4781,7 +4781,7 @@ qboolean jedi_saber_busy(const gentity_t* self)
 	if (self->client->ps.torsoAnimTimer > 300
 		&& (PM_SaberInAttack(self->client->ps.saber_move) && self->client->ps.saber_anim_level == SS_STRONG
 			|| PM_SpinningSaberAnim(self->client->ps.torsoAnim)
-			|| PM_SaberInSpecialAttack(self->client->ps.torsoAnim)
+			|| pm_saber_in_special_attack(self->client->ps.torsoAnim)
 			|| PM_SaberInBrokenParry(self->client->ps.saber_move)
 			|| PM_FlippingAnim(self->client->ps.torsoAnim)
 			|| PM_RollingAnim(self->client->ps.torsoAnim)))
@@ -4946,7 +4946,7 @@ evasionType_t jedi_saber_block_go(gentity_t* self, usercmd_t* cmd, vec3_t p_hitl
 		return EVASION_NONE;
 	}
 	if (PM_InSpecialJump(self->client->ps.legsAnim)
-		&& PM_SaberInSpecialAttack(self->client->ps.torsoAnim))
+		&& pm_saber_in_special_attack(self->client->ps.torsoAnim))
 	{
 		return EVASION_NONE;
 	}
@@ -5040,7 +5040,7 @@ evasionType_t jedi_saber_block_go(gentity_t* self, usercmd_t* cmd, vec3_t p_hitl
 							|| !PM_SaberInAttack(self->client->ps.saber_move) //not attacking
 							&& !PM_SaberInStart(self->client->ps.saber_move) //not starting an attack
 							&& !PM_SpinningSaberAnim(self->client->ps.torsoAnim) //not in a saber spin
-							&& !PM_SaberInSpecialAttack(self->client->ps.torsoAnim))) //not in a special attack
+							&& !pm_saber_in_special_attack(self->client->ps.torsoAnim))) //not in a special attack
 					{
 						//need to check all these because it overrides both torso and legs with the dodge
 						do_dodge = qtrue;
@@ -5064,7 +5064,7 @@ evasionType_t jedi_saber_block_go(gentity_t* self, usercmd_t* cmd, vec3_t p_hitl
 							|| !PM_SaberInAttack(self->client->ps.saber_move) //not attacking
 							&& !PM_SaberInStart(self->client->ps.saber_move) //not starting an attack
 							&& !PM_SpinningSaberAnim(self->client->ps.torsoAnim) //not in a saber spin
-							&& !PM_SaberInSpecialAttack(self->client->ps.torsoAnim))) //not in a special attack
+							&& !pm_saber_in_special_attack(self->client->ps.torsoAnim))) //not in a special attack
 					{
 						//need to check all these because it overrides both torso and legs with the dodge
 						do_dodge = qtrue;
@@ -9699,7 +9699,7 @@ static void jedi_attack()
 			&& !PM_SaberInAttack(NPC->client->ps.saber_move) //not attacking
 			&& !PM_SaberInStart(NPC->client->ps.saber_move) //not starting an attack
 			&& !PM_SpinningSaberAnim(NPC->client->ps.torsoAnim) //not in a saber spin
-			&& !PM_SaberInSpecialAttack(NPC->client->ps.torsoAnim)
+			&& !pm_saber_in_special_attack(NPC->client->ps.torsoAnim)
 			&& InFront(NPC->enemy->currentOrigin, NPC->currentOrigin, NPC->client->ps.viewangles, 0.7f)
 			&& IsSurrendering(NPC->enemy))
 		{
@@ -9723,7 +9723,7 @@ static void jedi_attack()
 			&& !PM_SaberInAttack(NPC->client->ps.saber_move) //not attacking
 			&& !PM_SaberInStart(NPC->client->ps.saber_move) //not starting an attack
 			&& !PM_SpinningSaberAnim(NPC->client->ps.torsoAnim) //not in a saber spin
-			&& !PM_SaberInSpecialAttack(NPC->client->ps.torsoAnim)
+			&& !pm_saber_in_special_attack(NPC->client->ps.torsoAnim)
 			&& InFront(NPC->enemy->currentOrigin, NPC->currentOrigin, NPC->client->ps.viewangles, 0.7f)
 			&& IsCowering(NPC->enemy))
 		{
@@ -9747,7 +9747,7 @@ static void jedi_attack()
 			&& !PM_SaberInAttack(NPC->client->ps.saber_move) //not attacking
 			&& !PM_SaberInStart(NPC->client->ps.saber_move) //not starting an attack
 			&& !PM_SpinningSaberAnim(NPC->client->ps.torsoAnim) //not in a saber spin
-			&& !PM_SaberInSpecialAttack(NPC->client->ps.torsoAnim)
+			&& !pm_saber_in_special_attack(NPC->client->ps.torsoAnim)
 			&& InFront(NPC->enemy->currentOrigin, NPC->currentOrigin, NPC->client->ps.viewangles, 0.7f)
 			&& NPC->enemy->client->ps.communicatingflags & 1 << RESPECTING)
 		{
@@ -9834,7 +9834,7 @@ static void jedi_attack()
 			&& !PM_SaberInAttack(NPC->client->ps.saber_move) //not attacking
 			&& !PM_SaberInStart(NPC->client->ps.saber_move) //not starting an attack
 			&& !PM_SpinningSaberAnim(NPC->client->ps.torsoAnim) //not in a saber spin
-			&& !PM_SaberInSpecialAttack(NPC->client->ps.torsoAnim)
+			&& !pm_saber_in_special_attack(NPC->client->ps.torsoAnim)
 			&& InFront(NPC->enemy->currentOrigin, NPC->currentOrigin, NPC->client->ps.viewangles, 0.7f)
 			&& NPC->enemy->client->ps.communicatingflags & 1 << GESTURING)
 		{

@@ -1560,7 +1560,7 @@ qboolean PM_SaberReturnAnim(const int anim)
 	return qfalse;
 }
 
-qboolean PM_SaberInSpecialAttack(const int anim)
+qboolean pm_saber_in_special_attack(const int anim)
 {
 	switch (anim)
 	{

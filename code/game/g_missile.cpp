@@ -53,7 +53,7 @@ extern qboolean PM_SaberInReflect(int move);
 extern qboolean PM_SaberInIdle(int move);
 extern qboolean PM_SaberInAttack(int move);
 extern qboolean PM_SaberInTransitionAny(int move);
-extern qboolean PM_SaberInSpecialAttack(int anim);
+extern qboolean pm_saber_in_special_attack(int anim);
 extern qboolean WP_SaberBlockBolt_MD(gentity_t* self, vec3_t hitloc, qboolean missileBlock);
 extern qboolean WP_SaberBlockBolt_AMD(gentity_t* self, vec3_t hitloc, qboolean missileBlock);
 extern qboolean WP_SaberBlockNonRandom(gentity_t* self, vec3_t hitloc, qboolean missileBlock);
@@ -281,7 +281,7 @@ void G_MissileBouncedoffSaber(gentity_t* ent, gentity_t* missile, vec3_t forward
 					//a bit more wild
 					if (PM_SaberInAttack(owner->client->ps.saber_move)
 						|| PM_SaberInTransitionAny(owner->client->ps.saber_move)
-						|| PM_SaberInSpecialAttack(owner->client->ps.torsoAnim))
+						|| pm_saber_in_special_attack(owner->client->ps.torsoAnim))
 					{
 						//moderately more wild
 						for (i = 0; i < 3; i++)
@@ -314,7 +314,7 @@ void G_MissileBouncedoffSaber(gentity_t* ent, gentity_t* missile, vec3_t forward
 				//a bit more wild
 				if (PM_SaberInAttack(owner->client->ps.saber_move)
 					|| PM_SaberInTransitionAny(owner->client->ps.saber_move)
-					|| PM_SaberInSpecialAttack(owner->client->ps.torsoAnim))
+					|| pm_saber_in_special_attack(owner->client->ps.torsoAnim))
 				{
 					//moderately more wild
 					for (i = 0; i < 3; i++)
@@ -416,7 +416,7 @@ void G_MissileBouncedoffSaber(gentity_t* ent, gentity_t* missile, vec3_t forward
 				//a bit more wild
 				if (PM_SaberInAttack(owner->client->ps.saber_move)
 					|| PM_SaberInTransitionAny(owner->client->ps.saber_move)
-					|| PM_SaberInSpecialAttack(owner->client->ps.torsoAnim))
+					|| pm_saber_in_special_attack(owner->client->ps.torsoAnim))
 				{
 					//really wild
 					for (i = 0; i < 3; i++)
@@ -514,7 +514,7 @@ void G_ReflectMissileAuto(gentity_t* ent, gentity_t* missile, vec3_t forward)
 				//a bit more wild
 				if (PM_SaberInAttack(owner->client->ps.saber_move)
 					|| PM_SaberInTransitionAny(owner->client->ps.saber_move)
-					|| PM_SaberInSpecialAttack(owner->client->ps.torsoAnim))
+					|| pm_saber_in_special_attack(owner->client->ps.torsoAnim))
 				{
 					//moderately more wild
 					for (i = 0; i < 3; i++)
@@ -586,7 +586,7 @@ void G_ReflectMissileAuto(gentity_t* ent, gentity_t* missile, vec3_t forward)
 						//a bit more wild
 						if (PM_SaberInAttack(owner->client->ps.saber_move)
 							|| PM_SaberInTransitionAny(owner->client->ps.saber_move)
-							|| PM_SaberInSpecialAttack(owner->client->ps.torsoAnim))
+							|| pm_saber_in_special_attack(owner->client->ps.torsoAnim))
 						{
 							//really wild
 							for (i = 0; i < 3; i++)
@@ -686,7 +686,7 @@ void G_ReflectMissileNPC(gentity_t* ent, gentity_t* missile, vec3_t forward)
 				//a bit more wild
 				if (PM_SaberInAttack(owner->client->ps.saber_move)
 					|| PM_SaberInTransitionAny(owner->client->ps.saber_move)
-					|| PM_SaberInSpecialAttack(owner->client->ps.torsoAnim))
+					|| pm_saber_in_special_attack(owner->client->ps.torsoAnim))
 				{
 					//moderately more wild
 					for (i = 0; i < 3; i++)
@@ -758,7 +758,7 @@ void G_ReflectMissileNPC(gentity_t* ent, gentity_t* missile, vec3_t forward)
 						//a bit more wild
 						if (PM_SaberInAttack(owner->client->ps.saber_move)
 							|| PM_SaberInTransitionAny(owner->client->ps.saber_move)
-							|| PM_SaberInSpecialAttack(owner->client->ps.torsoAnim))
+							|| pm_saber_in_special_attack(owner->client->ps.torsoAnim))
 						{
 							//really wild
 							for (i = 0; i < 3; i++)
@@ -975,7 +975,7 @@ void G_BoltBlockMissile(gentity_t* ent, gentity_t* missile, vec3_t forward)
 				//a bit more wild
 				if (PM_SaberInAttack(blocker->client->ps.saber_move)
 					|| PM_SaberInTransitionAny(blocker->client->ps.saber_move)
-					|| PM_SaberInSpecialAttack(blocker->client->ps.torsoAnim))
+					|| pm_saber_in_special_attack(blocker->client->ps.torsoAnim))
 				{
 					//moderately more wild
 					for (i = 0; i < 3; i++)
@@ -1065,7 +1065,7 @@ void G_BoltBlockMissile(gentity_t* ent, gentity_t* missile, vec3_t forward)
 				//a bit more wild
 				if (PM_SaberInAttack(blocker->client->ps.saber_move)
 					|| PM_SaberInTransitionAny(blocker->client->ps.saber_move)
-					|| PM_SaberInSpecialAttack(blocker->client->ps.torsoAnim))
+					|| pm_saber_in_special_attack(blocker->client->ps.torsoAnim))
 				{
 					//moderately more wild
 					for (i = 0; i < 3; i++)
@@ -1210,7 +1210,7 @@ void G_BoltBlockMissile(gentity_t* ent, gentity_t* missile, vec3_t forward)
 				//a bit more wild
 				if (PM_SaberInAttack(blocker->client->ps.saber_move)
 					|| PM_SaberInTransitionAny(blocker->client->ps.saber_move)
-					|| PM_SaberInSpecialAttack(blocker->client->ps.torsoAnim))
+					|| pm_saber_in_special_attack(blocker->client->ps.torsoAnim))
 				{
 					//really wild
 					for (i = 0; i < 3; i++)
@@ -1476,7 +1476,7 @@ void G_ReflectMissile_JKA(gentity_t* ent, gentity_t* missile, vec3_t forward)
 				//a bit more wild
 				if (PM_SaberInAttack(owner->client->ps.saber_move)
 					|| PM_SaberInTransitionAny(owner->client->ps.saber_move)
-					|| PM_SaberInSpecialAttack(owner->client->ps.torsoAnim))
+					|| pm_saber_in_special_attack(owner->client->ps.torsoAnim))
 				{
 					//moderately more wild
 					for (i = 0; i < 3; i++)
@@ -1548,7 +1548,7 @@ void G_ReflectMissile_JKA(gentity_t* ent, gentity_t* missile, vec3_t forward)
 						//a bit more wild
 						if (PM_SaberInAttack(owner->client->ps.saber_move)
 							|| PM_SaberInTransitionAny(owner->client->ps.saber_move)
-							|| PM_SaberInSpecialAttack(owner->client->ps.torsoAnim))
+							|| pm_saber_in_special_attack(owner->client->ps.torsoAnim))
 						{
 							//really wild
 							for (i = 0; i < 3; i++)
@@ -3667,7 +3667,7 @@ void wp_handle_bolt_block_sje_blockpoints(gentity_t* ent, gentity_t* missile, ve
 				//a bit more wild
 				if (PM_SaberInAttack(blocker->client->ps.saber_move)
 					|| PM_SaberInTransitionAny(blocker->client->ps.saber_move)
-					|| PM_SaberInSpecialAttack(blocker->client->ps.torsoAnim))
+					|| pm_saber_in_special_attack(blocker->client->ps.torsoAnim))
 				{
 					//moderately more wild
 					for (i = 0; i < 3; i++)
@@ -3767,7 +3767,7 @@ void wp_handle_bolt_block_sje_blockpoints(gentity_t* ent, gentity_t* missile, ve
 				//a bit more wild
 				if (PM_SaberInAttack(blocker->client->ps.saber_move)
 					|| PM_SaberInTransitionAny(blocker->client->ps.saber_move)
-					|| PM_SaberInSpecialAttack(blocker->client->ps.torsoAnim))
+					|| pm_saber_in_special_attack(blocker->client->ps.torsoAnim))
 				{
 					//moderately more wild
 					for (i = 0; i < 3; i++)
@@ -3928,7 +3928,7 @@ void wp_handle_bolt_block_sje_blockpoints(gentity_t* ent, gentity_t* missile, ve
 				//a bit more wild
 				if (PM_SaberInAttack(blocker->client->ps.saber_move)
 					|| PM_SaberInTransitionAny(blocker->client->ps.saber_move)
-					|| PM_SaberInSpecialAttack(blocker->client->ps.torsoAnim))
+					|| pm_saber_in_special_attack(blocker->client->ps.torsoAnim))
 				{
 					//really wild
 					for (i = 0; i < 3; i++)
@@ -4157,7 +4157,7 @@ void wp_handle_bolt_block_sje_forcepoints(gentity_t* ent, gentity_t* missile, ve
 				//a bit more wild
 				if (PM_SaberInAttack(blocker->client->ps.saber_move)
 					|| PM_SaberInTransitionAny(blocker->client->ps.saber_move)
-					|| PM_SaberInSpecialAttack(blocker->client->ps.torsoAnim))
+					|| pm_saber_in_special_attack(blocker->client->ps.torsoAnim))
 				{
 					//moderately more wild
 					for (i = 0; i < 3; i++)
@@ -4257,7 +4257,7 @@ void wp_handle_bolt_block_sje_forcepoints(gentity_t* ent, gentity_t* missile, ve
 				//a bit more wild
 				if (PM_SaberInAttack(blocker->client->ps.saber_move)
 					|| PM_SaberInTransitionAny(blocker->client->ps.saber_move)
-					|| PM_SaberInSpecialAttack(blocker->client->ps.torsoAnim))
+					|| pm_saber_in_special_attack(blocker->client->ps.torsoAnim))
 				{
 					//moderately more wild
 					for (i = 0; i < 3; i++)
@@ -4418,7 +4418,7 @@ void wp_handle_bolt_block_sje_forcepoints(gentity_t* ent, gentity_t* missile, ve
 				//a bit more wild
 				if (PM_SaberInAttack(blocker->client->ps.saber_move)
 					|| PM_SaberInTransitionAny(blocker->client->ps.saber_move)
-					|| PM_SaberInSpecialAttack(blocker->client->ps.torsoAnim))
+					|| pm_saber_in_special_attack(blocker->client->ps.torsoAnim))
 				{
 					//really wild
 					for (i = 0; i < 3; i++)

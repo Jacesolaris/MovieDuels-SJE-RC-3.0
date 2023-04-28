@@ -184,7 +184,7 @@ static void CG_PlayerFootsteps(const centity_t* cent, footstepType_t foot_step_t
 static void CG_PlayerAnimEvents(int anim_file_index, qboolean torso, int old_frame, int frame, int ent_num);
 extern void BG_G2SetBoneAngles(const centity_t* cent, int bone_index, const vec3_t angles, int flags,
 	Eorientations up, Eorientations left, Eorientations forward, qhandle_t* model_list);
-extern qboolean PM_SaberInSpecialAttack(int anim);
+extern qboolean pm_saber_in_special_attack(int anim);
 extern qboolean PM_SaberInAttack(int move);
 extern qboolean PM_SaberInTransitionAny(int move);
 extern int PM_GetTurnAnim(const gentity_t* gent, int anim);
@@ -13350,7 +13350,7 @@ static void CG_AddSaberBladeGo(centity_t* cent, centity_t* scent, const int rend
 			if (!cent->gent->client->ps.saberInFlight
 				&& !PM_SaberInAttack(cent->gent->client->ps.saber_move)
 				&& !PM_SaberInTransitionAny(cent->gent->client->ps.saber_move)
-				&& !PM_SaberInSpecialAttack(cent->gent->client->ps.torsoAnim))
+				&& !pm_saber_in_special_attack(cent->gent->client->ps.torsoAnim))
 			{
 				//idle, do no marks
 				no_marks = qtrue;
@@ -13360,7 +13360,7 @@ static void CG_AddSaberBladeGo(centity_t* cent, centity_t* scent, const int rend
 		{
 			if (cent->gent->client->ps.saberInFlight
 				|| PM_SaberInAttack(cent->gent->client->ps.saber_move)
-				|| PM_SaberInSpecialAttack(cent->gent->client->ps.torsoAnim))
+				|| pm_saber_in_special_attack(cent->gent->client->ps.torsoAnim))
 			{
 				trace_mask |= CONTENTS_BODY | CONTENTS_CORPSE;
 			}
@@ -13458,7 +13458,7 @@ static void CG_AddSaberBladeGo(centity_t* cent, centity_t* scent, const int rend
 											if (cg_SerenityJediEngineMode.integer == 2)
 											{
 												if (PM_SaberInAttack(cent->gent->client->ps.saber_move)
-													|| PM_SaberInSpecialAttack(cent->gent->client->ps.torsoAnim))
+													|| pm_saber_in_special_attack(cent->gent->client->ps.torsoAnim))
 												{
 													cgi_S_StartSound(cent->lerpOrigin, cent->currentState.client_num,
 														CHAN_ITEM, cgi_S_RegisterSound(
